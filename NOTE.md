@@ -11,3 +11,8 @@
 * DTO 에서 @NotBlank 검증 빈값 검증 굳이 검증 로직을 구현안해도 됨
 * @ControllerAdvice, @ExceptionHandler 을 사용해 Exception 중앙 처리 클래스 생성
 * 
+
+### 빌더의 장점
+- 가독성에 좋다 (값 생성에 대한 유연함)
+- 필요한 값만 받을 수 있다. -> 오버로딩 가능한 조건 찾아보기
+- 객체의 불변성
