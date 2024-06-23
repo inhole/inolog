@@ -19,6 +19,7 @@ public class PostService {
                 .title(postCreate.getTitle())
                 .content(postCreate.getContent())
                 .build();
+
         postRepository.save(post);
     }
 }
