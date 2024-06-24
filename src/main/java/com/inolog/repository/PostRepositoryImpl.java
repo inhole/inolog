@@ -1,0 +1,26 @@
+package com.inolog.repository;
+
+import com.inolog.domain.Post;
+import com.inolog.domain.QPost;
+import com.inolog.request.PostSearch;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
+import static com.inolog.domain.QPost.post;
+
+@RequiredArgsConstructor
+public class PostRepositoryImpl implements PostRepositoryCustom {
+
+    private final JPAQueryFactory jpaQueryFactory;
+
+    @Override
+    public List<Post> getList(PostSearch postSearch) {
+        return jpaQueryFactory.selectFrom(post)
+                .limit(postSearch.getSize())
+                .offset((long) (postSearch.getPage() - 1) * postSearch.getSize())
+                .orderBy(post.id.desc())
+                .fetch();
+    }
+}

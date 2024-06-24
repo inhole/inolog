@@ -2,6 +2,7 @@ package com.inolog.controller;
 
 import com.inolog.domain.Post;
 import com.inolog.request.PostCreate;
+import com.inolog.request.PostSearch;
 import com.inolog.response.PostResponse;
 import com.inolog.service.PostService;
 import jakarta.validation.Valid;
@@ -35,7 +36,7 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public List<PostResponse> getList(Pageable pageable) {
-        return postService.getList(pageable);
+    public List<PostResponse> getList(@RequestParam PostSearch postSearch) {
+        return postService.getList(postSearch);
     }
 }

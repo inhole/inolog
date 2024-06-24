@@ -3,6 +3,7 @@ package com.inolog.service;
 import com.inolog.domain.Post;
 import com.inolog.repository.PostRepository;
 import com.inolog.request.PostCreate;
+import com.inolog.request.PostSearch;
 import com.inolog.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,8 +42,8 @@ public class PostService {
                 .build();
     }
 
-    public List<PostResponse> getList(Pageable pageable) {
-        return postRepository.findAll(pageable).stream()
+    public List<PostResponse> getList(PostSearch postSearch) {
+        return postRepository.getList(postSearch).stream()
                 .map(PostResponse::new)
                 .collect(Collectors.toList());
     }
