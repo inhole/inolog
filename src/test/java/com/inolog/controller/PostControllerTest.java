@@ -5,6 +5,7 @@ import com.inolog.domain.Post;
 import com.inolog.repository.PostRepository;
 import com.inolog.request.PostCreate;
 import com.inolog.request.PostEdit;
+import com.inolog.service.PostService;
 import org.assertj.core.api.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.*;
@@ -41,6 +42,8 @@ class PostControllerTest {
 
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private PostService postService;
 
     @BeforeEach
     public void clean() {
@@ -203,5 +206,22 @@ class PostControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
 
+    }
+
+    @Test
+    @DisplayName("게시글 삭제")
+    void test8() throws Exception {
+        // given
+        Post post = Post.builder()
+                .title("호돌맨")
+                .content("반포자이")
+                .build();
+        postRepository.save(post);
+
+        // expected
+        mockMvc.perform(delete("/posts/{postId}", post.getId())
+                    .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 }
