@@ -1,15 +1,15 @@
 package com.inolog.service;
 
 import com.inolog.domain.Post;
+import com.inolog.domain.PostEditor;
 import com.inolog.repository.PostRepository;
 import com.inolog.request.PostCreate;
+import com.inolog.request.PostEdit;
 import com.inolog.request.PostSearch;
 import com.inolog.response.PostResponse;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,5 +46,20 @@ public class PostService {
         return postRepository.getList(postSearch).stream()
                 .map(PostResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void edit(Long id, PostEdit postEdit) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
+
+        PostEditor.PostEditorBuilder editorBuilder = post.toEditor();
+
+        PostEditor postEditor = editorBuilder.title(postEdit.getTitle())
+                .content(postEdit.getContent())
+                .build();
+
+        post.edit(postEditor);
+
     }
 }

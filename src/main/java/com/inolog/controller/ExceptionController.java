@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Exception 관리 컨트롤러
+ */
 @Slf4j
 @ControllerAdvice
 public class ExceptionController {

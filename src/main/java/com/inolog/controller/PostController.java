@@ -2,9 +2,11 @@ package com.inolog.controller;
 
 import com.inolog.domain.Post;
 import com.inolog.request.PostCreate;
+import com.inolog.request.PostEdit;
 import com.inolog.request.PostSearch;
 import com.inolog.response.PostResponse;
 import com.inolog.service.PostService;
+import jakarta.persistence.PostUpdate;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +38,12 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public List<PostResponse> getList(@RequestParam PostSearch postSearch) {
+    public List<PostResponse> getList(@ModelAttribute PostSearch postSearch) {
         return postService.getList(postSearch);
+    }
+
+    @PatchMapping("/posts/{postId}")
+    public void edit(@PathVariable Long postId, @RequestBody @Valid PostEdit request) {
+        postService.edit(postId, request);
     }
 }
