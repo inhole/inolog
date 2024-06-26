@@ -27,26 +27,49 @@ public class PostController {
 
     private final PostService postService;
 
+    /**
+     * 게시글 등록
+     * @param request
+     */
     @PostMapping("/posts")
     public void post(@RequestBody @Valid PostCreate request) {
         postService.write(request);
     }
 
+    /**
+     * 게시글 한건 조회
+     * @param postId
+     * @return
+     */
     @GetMapping("/posts/{postId}")
     public PostResponse get(@PathVariable Long postId) {
         return postService.get(postId);
     }
 
+    /**
+     * 게시글 여러개 조회
+     * @param postSearch
+     * @return
+     */
     @GetMapping("/posts")
     public List<PostResponse> getList(@ModelAttribute PostSearch postSearch) {
         return postService.getList(postSearch);
     }
 
+    /**
+     * 게시글 수정
+     * @param postId
+     * @param request
+     */
     @PatchMapping("/posts/{postId}")
     public void edit(@PathVariable Long postId, @RequestBody @Valid PostEdit request) {
         postService.edit(postId, request);
     }
 
+    /**
+     * 게시글 삭제
+     * @param postId
+     */
     @DeleteMapping("/posts/{postId}")
     public void delete(@PathVariable Long postId) {
         postService.delete(postId);
