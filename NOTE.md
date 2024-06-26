@@ -35,3 +35,4 @@
 1. build.gradle 설정
 2. src/doc/asciidoc >> index.adoc 추가
 3. bootJar 실행 하면 resources/static/docs >> index.html 생성
+- 글 단건조회, 글 작성 함
