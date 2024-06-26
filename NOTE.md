@@ -16,3 +16,22 @@
 - 가독성에 좋다 (값 생성에 대한 유연함)
 - 필요한 값만 받을 수 있다. -> 오버로딩 가능한 조건 찾아보기
 - 객체의 불변성
+
+### TDD의 장점
+- 초기에 문제 발견 가능
+- 회귀 테스트 가능 (코드수정 / 리팩토링 시 기존 기능이 올바르게 작동하는지 확인 가능)
+- 기능에 대한 불확실성 감소
+- 시스템 문서 기능 역할을 수행할 수 있음
+
+### API 문서 생성
+- 클라이언트 입장 -> 어떤 API 있는지 모름
+
+#### Spring RestDocs
+- 운영코드에 영향이 가지 않고 테스트 코드로 작성 가능
+- Test 케이스 실행 -> 문서 생성해준다
+- 레퍼런스 참고 : https://docs.spring.io/spring-restdocs/docs/current/reference/htmlsingle/
+
+#### 설정
+1. build.gradle 설정
+2. src/doc/asciidoc >> index.adoc 추가
+3. bootJar 실행 하면 resources/static/docs >> index.html 생성
