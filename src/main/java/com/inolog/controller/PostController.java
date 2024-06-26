@@ -1,6 +1,7 @@
 package com.inolog.controller;
 
 import com.inolog.domain.Post;
+import com.inolog.exception.InvalidRequest;
 import com.inolog.request.PostCreate;
 import com.inolog.request.PostEdit;
 import com.inolog.request.PostSearch;
@@ -33,6 +34,7 @@ public class PostController {
      */
     @PostMapping("/posts")
     public void post(@RequestBody @Valid PostCreate request) {
+        request.validate();
         postService.write(request);
     }
 
