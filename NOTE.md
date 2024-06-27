@@ -35,4 +35,30 @@
 1. build.gradle 설정
 2. src/doc/asciidoc >> index.adoc 추가
 3. bootJar 실행 하면 resources/static/docs >> index.html 생성
+4. test/resources 에 보면 커스텀 템플릿 생성 가능
 - 글 단건조회, 글 작성 함
+
+### ssh-keygen 설정
+- github 같은 경우 SSH and GPG keys 에 들어간 후
+- local 깃 bash 등 으로 ssh-keygen 실행
+- 생성 된 id_rsa.pub 공개키 >> cat id_rsa.pub 붙여넣기 
+- ssh키로 clone
+
+### vue 설치
+```sh
+$ npm init vue@latest
+Need to install the following packages:
+create-vue@3.10.4
+Ok to proceed? (y) y
+Vue.js - The Progressive JavaScript Framework
+√ Project name: ... front
+√ Add TypeScript? ... Yes
+√ Add JSX Support? ... Yes
+√ Add Vue Router for Single Page Application development? ... Yes
+√ Add Pinia for state management? ... Yes
+√ Add Vitest for Unit Testing? ... No
+√ Add an End-to-End Testing Solution? » No
+√ Add ESLint for code quality? ... Yes
+√ Add Prettier for code formatting? ... Yes
+√ Add Vue DevTools 7 extension for debugging? (experimental) ... Yes
+
