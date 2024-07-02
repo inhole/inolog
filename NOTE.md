@@ -61,4 +61,74 @@ Vue.js - The Progressive JavaScript Framework
 √ Add ESLint for code quality? ... Yes
 √ Add Prettier for code formatting? ... Yes
 √ Add Vue DevTools 7 extension for debugging? (experimental) ... Yes
+```
+### 서버
+1. 네트워크를 통해 정보나 서비스를 제공하는 장치 or 프로그램
+2. 개인 PC
+   - 접근성 좋음
+   - 서버 구입 비용 없음
+   - 서버 설정 직접 해야 함
+   - 전기세 많이 나옴
+   - 네트워크 속도
+   - IP 주소 
+3. 웹호스팅
+   - 하나의 서버(OS)에 여러 사용자 입주
+   - 가격이 저렴함 (월 500원~)
+   - 환경 제한 (주로 PHP에서 많이 이용함)
+   - 트래픽 제한
+   - 속도 느림
+   - 도메인 등록 제한
+4. 서버 호스팅, 코로케이션
+   - 호스팅 업체를 통해 서버를 대여 (구입도 가능)
+   - 알고 보면 가성비
+   - 서버 설정 직접 해야 함
+   - 서버 월 8만원 vs 200만원 서버 월 30만원 1년 약정 인수
+   - 인수 후에는 코로케이션 형태로 전환 (월 10만원)
+   - 확장성 부족
+5. 클라우드 (AWS, Azure)
+   - 이용한 만큼 지불
+   - 설정, 관리가 상대적으로 쉬움
+   - 확장성
+   - 비쌈
+   - 비즈니스에 집중 가능 (어느 정도 까지는)
+   - 알고 보면 저렴 (탄력적 운영 시간, 인력 등)
+
+### AWS EC2 생성하기
+- 새 인스턴스 생성
+- OS: Amazon Linux 선택
+- 인스턴스 유형 (프리 티어 사용 가능) / 월 15,000원 정도
+- 키 페어(로그인: 비밀 키 파일) = RSA / .pem (.ssh 폴더에 저장 하는게 좋을 듯, chmod 600 권한 설정)
+- 스토리지: 16GB
+- 접속: ssh -i ~/.ssh/{키 페어 파일}.pem ec2-user@{ip}
+
+### EC2 파일 전송
+- scp file 이용 (로컬과 원격에 연결) or rsync 이용
+- 명령어: scp -i ~/.ssh/{키 페어 파일}.pem ./{빌드된 파일}.jar ec2-user@{ip}:/home/ec2-user
+
+### java 설치
+- java 설치 (명령어: sudo amazon-linux-extras install {java}) / or yum, apt
+
+### 인바운드 규칙
+- 사용자 지정 TCP / AnyWhere-IPv4 / 8080
+
+### curl 명령어로 간단한 api test
+- nohup 명령어로 실행 하면 백그라운드에서 실행 가능
+- nohup java -jar inolog.jar &
+- 확인: netstat -lntp
+- 
+### 고정 IP 설정
+- 탄력적 IP 주소 할당
+- 탄력적 IP 주소 연결
+
+---
+### 요청 확인
+- get param 으로 인증
+- header 으로 인증
+- post body 로 인증
+- Interceptor 활용
+
+
+
+
+
 
