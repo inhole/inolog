@@ -1,5 +1,6 @@
 package com.inolog.controller;
 
+import com.inolog.config.data.UserSession;
 import com.inolog.request.PostCreate;
 import com.inolog.request.PostEdit;
 import com.inolog.request.PostSearch;
@@ -19,12 +20,13 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("/test")
-    public String test() {
-        return "test";
+    @GetMapping("/foo")
+    public Long foo(UserSession userSession) {
+        log.info(">>>{}", userSession.id);
+        return userSession.id;
     }
 
-    /**
+     /**
      * 게시글 등록
      * @param request
      */

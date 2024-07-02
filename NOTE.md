@@ -125,8 +125,11 @@ Vue.js - The Progressive JavaScript Framework
 - get param 으로 인증
 - header 으로 인증
 - post body 로 인증
-- Interceptor 활용
+- Interceptor 활용, HandlerMethodArgumentResolver 활용
 
+### ModHeader
+- 크롬 확장프로그램
+- Http Header 값 추가
 
 
 

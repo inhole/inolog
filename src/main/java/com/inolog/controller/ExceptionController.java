@@ -15,10 +15,20 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * Exception 관리 컨트롤러
+ * Enum 활용?
  */
 @Slf4j
 @ControllerAdvice
 public class ExceptionController {
+
+/*
+    # ControllerAdvice 동작 과정
+    1. 디스패처 서블릿이 에러를 catch함
+    2. 해당 에러를 처리할 수 있는 처리기(HandlerExceptionResolver)가 에러를 처리함
+    3. 컨트롤러의 ExceptionHandler로 처리가능한지 검사함
+    4. ControllerAdvice의 ExceptionHandler로 처리가능한지 검사함
+    5. ControllerAdvice의 ExceptionHandler 메소드를 invoke하여 예외를 반환함
+*/
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
