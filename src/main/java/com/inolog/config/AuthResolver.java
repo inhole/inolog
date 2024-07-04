@@ -1,13 +1,17 @@
 package com.inolog.config;
 
 import com.inolog.config.data.UserSession;
+import com.inolog.domain.Session;
 import com.inolog.exception.Unauthorized;
+import com.inolog.repository.SessionRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+@RequiredArgsConstructor
 public class AuthResolver implements HandlerMethodArgumentResolver {
 
 /*
@@ -26,6 +30,7 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
 
     4. Controller Method invoke
 */
+    private final SessionRepository sessionRepository;
 
     /**
      * parameter가 해당 resolver를 지원하는 여부 확인
@@ -54,8 +59,9 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
         }
 
         // DB 사용자 확인작업
-        // ...
+        Session session = sessionRepository.findByAccessToken(accessToken)
+                .orElseThrow(Unauthorized::new);
 
-        return new UserSession(1L);
+        return new UserSession(session.getUser().getId());
     }
 }
