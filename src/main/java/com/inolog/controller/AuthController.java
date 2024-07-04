@@ -5,6 +5,8 @@ import com.inolog.exception.InvalidRequest;
 import com.inolog.exception.InvalidSigninInformation;
 import com.inolog.repository.UserRepository;
 import com.inolog.request.Login;
+import com.inolog.response.SessionResponse;
+import com.inolog.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,18 +21,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserRepository userRepository;
+    private final AuthService authService;
 
     @PostMapping("/auth/login")
-    public User login(@RequestBody Login login) {
-        // json 아이디/비밀번호
-        log.info(">> login : {}", login);
-
-        // DB에서 조회
-        User user = userRepository.findByEmailAndPassword(login.getEmail(), login.getPassword())
-                .orElseThrow(InvalidSigninInformation::new);
-
+    public SessionResponse login(@RequestBody Login login) {
         // 토큰을 응답 >>
-        return user;
+        String accessToken = authService.signin(login);
+        return new SessionResponse(accessToken);
     }
 }
