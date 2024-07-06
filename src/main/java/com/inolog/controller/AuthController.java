@@ -7,6 +7,8 @@ import com.inolog.repository.UserRepository;
 import com.inolog.request.Login;
 import com.inolog.response.SessionResponse;
 import com.inolog.service.AuthService;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -17,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.crypto.SecretKey;
 import java.time.Duration;
+import java.util.Base64;
 import java.util.Optional;
 
 @Slf4j
@@ -27,21 +31,20 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/auth/login")
-    public ResponseEntity<Object> login(@RequestBody Login login) {
-        String accessToken = authService.signin(login);
-        ResponseCookie cookie = ResponseCookie.from("SESSION", accessToken)
-                .domain("localhost") // TODO 서버 환경에 따른 분리 필요
-                .path("/") // Cookie 헤더를 전송하기 위하여 요청되는 URL 내에 반드시 존재해야 하는 URL 경로
-                .httpOnly(true) // Cross-site 스크립팅 공격을 방지하기 위한 옵션
-                .secure(false) // HTTPS 프로토콜 상에서 암호화된 요청을 위한 옵션
-                .maxAge(Duration.ofDays(30))
-                .sameSite("Strict") // 서로 다른 도메인간의 쿠키 전송에 대한 보안을 설정
-                .build();
-        log.info(">>>>>cookie={}", cookie.toString());
+    private final static String KEY = "g9rQHMVyslfCtFD4uwQcM2dihF2DuHfgOINxXytWPtY=";
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .build();
+    @PostMapping("/auth/login")
+    public SessionResponse login(@RequestBody Login login) {
+        Long userId = authService.signin(login);
+
+//        SecretKey key = Jwts.SIG.HS256.key().build();
+        SecretKey key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(KEY));
+
+        String jws = Jwts.builder()
+                .subject(String.valueOf(userId))
+                .signWith(key)
+                .compact();
+
+        return new SessionResponse(jws);
     }
 }

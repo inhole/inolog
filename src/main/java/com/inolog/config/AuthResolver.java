@@ -4,6 +4,10 @@ import com.inolog.config.data.UserSession;
 import com.inolog.domain.Session;
 import com.inolog.exception.Unauthorized;
 import com.inolog.repository.SessionRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +17,11 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -35,6 +44,7 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
     4. Controller Method invoke
 */
     private final SessionRepository sessionRepository;
+    private static final String KEY = "g9rQHMVyslfCtFD4uwQcM2dihF2DuHfgOINxXytWPtY=";
 
     /**
      * parameter가 해당 resolver를 지원하는 여부 확인
@@ -57,24 +67,32 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
      */
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        HttpServletRequest servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
-        if(servletRequest == null) {
-            log.error("servletRequest is null");
+
+        String jws = webRequest.getHeader("Authorization");
+        if (jws == null || jws.equals("")) {
             throw new Unauthorized();
         }
 
-        Cookie[] cookies = servletRequest.getCookies();
-        if (cookies.length == 0) {
-            log.error("쿠기가 없음");
+//        byte[] decodedKey = Base64.getDecoder().decode(KEY);
+        SecretKey decodedKey = new SecretKeySpec(
+                KEY.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm()
+        );
+
+        try {
+            Jws<Claims> claims =  Jwts.parser()
+//                    .setSigningKey(decodedKey)
+                    .verifyWith(decodedKey)
+                    .build()
+                    .parseClaimsJws(jws);
+//                    .parseSignedClaims(jws);
+            log.info("claims >>>>> {}", claims);
+
+            long userId = Long.parseLong(claims.getBody().getSubject());
+            return new UserSession(userId);
+
+
+        } catch (JwtException e) {
             throw new Unauthorized();
         }
-
-        String accessToken = cookies[0].getValue();
-
-        // DB 사용자 확인작업
-        Session session = sessionRepository.findByAccessToken(accessToken)
-                .orElseThrow(Unauthorized::new);
-
-        return new UserSession(session.getUser().getId());
     }
 }
