@@ -31,13 +31,16 @@ public class AuthController {
 
     private final AuthService authService;
 
-    private final static String KEY = "g9rQHMVyslfCtFD4uwQcM2dihF2DuHfgOINxXytWPtY=";
+    private final static String KEY = "3l3Cw10+O7gzomDsD4c7F1D7v3r3LBJ8MvMx8DJnQKE=";
 
     @PostMapping("/auth/login")
     public SessionResponse login(@RequestBody Login login) {
         Long userId = authService.signin(login);
 
-//        SecretKey key = Jwts.SIG.HS256.key().build();
+//        SecretKey key2 = Jwts.SIG.HS256.key().build();
+//        byte[] encodedKey = key2.getEncoded();
+//        String strKey = Base64.getEncoder().encodeToString(encodedKey);
+
         SecretKey key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(KEY));
 
         String jws = Jwts.builder()
