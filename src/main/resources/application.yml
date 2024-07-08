@@ -26,5 +26,5 @@ spring:
         default-page-size: 20
         one-indexed-parameters: true
 
-  jwt:
-    secret: 3l3Cw10+O7gzomDsD4c7F1D7v3r3LBJ8MvMx8DJnQKE=
+inolog:
+  jwt-key: 3l3Cw10+O7gzomDsD4c7F1D7v3r3LBJ8MvMx8DJnQKE=

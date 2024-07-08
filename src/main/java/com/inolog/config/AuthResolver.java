@@ -46,8 +46,7 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
     4. Controller Method invoke
 */
     private final SessionRepository sessionRepository;
-
-    private static final String KEY = "3l3Cw10+O7gzomDsD4c7F1D7v3r3LBJ8MvMx8DJnQKE=";
+    private final AppConfig appConfig;
 
     /**
      * parameter가 해당 resolver를 지원하는 여부 확인
@@ -76,12 +75,9 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
             throw new Unauthorized();
         }
 
-        // 암호화 키 디코딩
-        SecretKey key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(KEY));
-
         try {
             Jws<Claims> claims =  Jwts.parser()
-                    .verifyWith(key)
+                    .verifyWith(appConfig.getJwtKey())
                     .build()
                     .parseSignedClaims(jws);
 
