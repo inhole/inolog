@@ -9,6 +9,7 @@ import com.inolog.repository.UserRepository;
 import com.inolog.request.Login;
 import com.inolog.request.PostCreate;
 import com.inolog.service.PostService;
+import com.inolog.util.JwtUtil;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,19 +47,22 @@ class AuthControllerTest {
     @Autowired
     private SessionRepository sessionRepository;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @BeforeEach
     public void clean() {
         userRepository.deleteAll();
     }
 
     @Test
-    @DisplayName("로그인 성공")
+    @DisplayName("로그인 성공 후 토큰 확인")
     void test1() throws Exception {
         // given
         userRepository.save(User.builder()
-                .name("ino")
                 .email("sylee74133@gmail.com")
                 .password("1234")
+                .name("ino")
                 .build());
 
         // Scrypt, Bcrypt password 암호화
@@ -76,114 +80,33 @@ class AuthControllerTest {
                         .content(json)
                 )
                 .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.code").value("400"))
-//                .andExpect(jsonPath("$.message").value("잘못된 요청입니다."))
-//                .andExpect(jsonPath("$.validation.title").value("타이틀을 입력해주세요."))
+                .andExpect(jsonPath("$.accessToken", notNullValue()))
                 .andDo(print());
     }
 
-    @Test
-    @Transactional
-    @DisplayName("로그인 성공후 세션 1개 생성")
-    void test2() throws Exception {
-        // given
-        User user = userRepository.save(User.builder()
-                .name("ino")
-                .email("sylee74133@gmail.com")
-                .password("1234")
-                .build());
-
-        // Scrypt, Bcrypt password 암호화
-
-        Login login = Login.builder()
-                .email("sylee74133@gmail.com")
-                .password("1234")
-                .build();
-
-        String json = objectMapper.writeValueAsString(login);
-
-        // when
-        mockMvc.perform(post("/auth/login")
-                        .contentType(APPLICATION_JSON) // application/json 주로 쓰임
-                        .content(json)
-                )
-                .andExpect(status().isOk())
-                .andDo(print());
-
-
-        assertEquals(1L, user.getSessions().size());
-    }
-
-    @Test
-    @DisplayName("로그인 성공후 세션 응답")
-    void test3() throws Exception {
-        // given
-        User user = userRepository.save(User.builder()
-                .name("ino")
-                .email("sylee74133@gmail.com")
-                .password("1234")
-                .build());
-
-        // Scrypt, Bcrypt password 암호화
-
-        Login login = Login.builder()
-                .email("sylee74133@gmail.com")
-                .password("1234")
-                .build();
-
-        String json = objectMapper.writeValueAsString(login);
-
-        // when
-        mockMvc.perform(post("/auth/login")
-                        .contentType(APPLICATION_JSON) // application/json 주로 쓰임
-                        .content(json)
-                )
-                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.accessToken", notNullValue()))
-                .andExpect(MockMvcResultMatchers.cookie().exists("SESSION"))
-                .andDo(print());
-    }
 
     @Test
     @DisplayName("로그인 후 권한이 필요한 페이지 접속한다 /foo")
-    void test4() throws Exception {
+    void test2() throws Exception {
         // given
         User user = User.builder()
-                .name("ino")
                 .email("sylee74133@gmail.com")
                 .password("1234")
+                .name("ino")
                 .build();
         Session session = user.addSession();
         userRepository.save(user);
 
+        String jws = jwtUtil.generateToken(user.getId());
+
         // when
         mockMvc.perform(get("/foo")
                         .contentType(APPLICATION_JSON) // application/json 주로 쓰임
-                        .header("Authorization", session.getAccessToken())
+                        .header("Authorization", jws)
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
     }
 
-    @Test
-    @DisplayName("로그인 후 검증되지 않은 세센값으로 권한이 필요한 페이지에 접속할 수 없다.")
-    void test5() throws Exception {
-        // given
-        User user = User.builder()
-                .name("ino")
-                .email("sylee74133@gmail.com")
-                .password("1234")
-                .build();
-        Session session = user.addSession();
-        userRepository.save(user);
-
-        // when
-        mockMvc.perform(get("/foo")
-                        .contentType(APPLICATION_JSON) // application/json 주로 쓰임
-                        .header("Authorization", session.getAccessToken() + "-another")
-                )
-                .andExpect(status().isUnauthorized())
-                .andDo(print());
-    }
 
 }

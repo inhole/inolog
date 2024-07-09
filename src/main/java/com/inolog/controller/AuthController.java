@@ -6,8 +6,10 @@ import com.inolog.exception.InvalidRequest;
 import com.inolog.exception.InvalidSigninInformation;
 import com.inolog.repository.UserRepository;
 import com.inolog.request.Login;
+import com.inolog.request.Signup;
 import com.inolog.response.SessionResponse;
 import com.inolog.service.AuthService;
+import com.inolog.util.JwtUtil;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -32,25 +34,18 @@ import java.util.Optional;
 public class AuthController {
 
     private final AuthService authService;
-    private final AppConfig appConfig;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/auth/login")
     public SessionResponse login(@RequestBody Login login) {
         Long userId = authService.signin(login);
-
-        // 암호화 키 생성
-//        SecretKey key2 = Jwts.SIG.HS256.key().build();
-//        byte[] encodedKey = key2.getEncoded();
-//        String strKey = Base64.getEncoder().encodeToString(encodedKey);
-
-        // JWS(Json Web Signature) 생성
-        String jws = Jwts.builder()
-                .subject(String.valueOf(userId))
-                .signWith(appConfig.getJwtKey())
-                .issuedAt(new Date()) // 생성 일
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 유효 기간 1시간
-                .compact();
+        String jws = jwtUtil.generateToken(userId);
 
         return new SessionResponse(jws);
+    }
+
+    @PostMapping("/auth/signup")
+    public void signup(@RequestBody Signup signup) {
+        authService.signup(signup);
     }
 }

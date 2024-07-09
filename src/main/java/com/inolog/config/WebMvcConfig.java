@@ -1,6 +1,7 @@
 package com.inolog.config;
 
 import com.inolog.repository.SessionRepository;
+import com.inolog.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -13,8 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebMvcConfig  implements WebMvcConfigurer {
 
-    private final SessionRepository sessionRepository;
-    private final AppConfig appConfig;
+    private final JwtUtil jwtUtil;
 
     /**
      * 구현한 resolver 추가한다.
@@ -22,6 +22,6 @@ public class WebMvcConfig  implements WebMvcConfigurer {
      */
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new AuthResolver(sessionRepository, appConfig));
+        resolvers.add(new AuthResolver(jwtUtil));
     }
 }

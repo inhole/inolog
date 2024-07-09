@@ -4,6 +4,7 @@ import com.inolog.config.data.UserSession;
 import com.inolog.domain.Session;
 import com.inolog.exception.Unauthorized;
 import com.inolog.repository.SessionRepository;
+import com.inolog.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -45,8 +46,7 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
 
     4. Controller Method invoke
 */
-    private final SessionRepository sessionRepository;
-    private final AppConfig appConfig;
+    private final JwtUtil jwtUtil;
 
     /**
      * parameter가 해당 resolver를 지원하는 여부 확인
@@ -71,24 +71,9 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 
         String jws = webRequest.getHeader("Authorization");
-        if (jws == null || jws.equals("")) {
-            throw new Unauthorized();
-        }
 
-        try {
-            Jws<Claims> claims =  Jwts.parser()
-                    .verifyWith(appConfig.getJwtKey())
-                    .build()
-                    .parseSignedClaims(jws);
+        long userId = jwtUtil.getUserId(jws);
 
-            log.info("claims >>>>> {}", claims);
-            long userId = Long.parseLong(claims.getPayload().getSubject());
-            return new UserSession(userId);
-
-        } catch (JwtException e) {
-            log.error("error :: {} ", e.getMessage());
-            throw new Unauthorized();
-        }
-
+        return new UserSession(userId);
     }
 }
