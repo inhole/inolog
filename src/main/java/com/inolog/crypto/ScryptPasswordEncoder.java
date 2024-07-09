@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+@Deprecated
 @Profile("default")
 @Component
 public class ScryptPasswordEncoder implements PasswordEncoder {

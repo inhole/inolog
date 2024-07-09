@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 /**
  * 개발용 패스워드 인코딩
  */
+@Deprecated
 @Profile("test")
 @Component
 public class PlainPasswordEncoder implements PasswordEncoder {

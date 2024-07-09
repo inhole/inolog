@@ -1,5 +1,6 @@
 package com.inolog.crypto;
 
+@Deprecated
 public interface PasswordEncoder {
 
     String encrypt(String rawPassword);
