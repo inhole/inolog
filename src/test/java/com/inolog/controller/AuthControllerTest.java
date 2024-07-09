@@ -8,6 +8,7 @@ import com.inolog.repository.SessionRepository;
 import com.inolog.repository.UserRepository;
 import com.inolog.request.Login;
 import com.inolog.request.PostCreate;
+import com.inolog.request.Signup;
 import com.inolog.service.PostService;
 import com.inolog.util.JwtUtil;
 import org.hamcrest.Matchers;
@@ -108,5 +109,22 @@ class AuthControllerTest {
                 .andDo(print());
     }
 
+    @Test
+    @DisplayName("회원가입")
+    void test3() throws Exception {
+        // given
+        Signup signup = Signup.builder()
+                .email("sylee74133@gmail.com")
+                .password("1234")
+                .name("이인호")
+                .build();
 
+        // when
+        mockMvc.perform(post("/auth/signup")
+                        .content(objectMapper.writeValueAsString(signup))
+                        .contentType(APPLICATION_JSON) // application/json 주로 쓰임
+                )
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
 }
