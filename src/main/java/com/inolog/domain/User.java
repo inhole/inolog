@@ -22,7 +22,7 @@ public class User {
 
     private String name;
 
-    private String email;
+    private String email; // 아이디
 
     private String password;
 

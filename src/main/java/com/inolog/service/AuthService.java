@@ -1,12 +1,12 @@
 package com.inolog.service;
 
-import com.inolog.crypto.PasswordEncoder;
 import com.inolog.domain.User;
 import com.inolog.exception.AlreadyExistsEmailException;
 import com.inolog.repository.UserRepository;
 import com.inolog.request.Signup;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -29,7 +29,7 @@ public class AuthService {
             throw new AlreadyExistsEmailException();
         }
 
-        String encryptedPassword = passwordEncoder.encrypt(signup.getPassword());
+        String encryptedPassword = passwordEncoder.encode(signup.getPassword());
 
         var user = User.builder()
                 .email(signup.getEmail())

@@ -1,7 +1,10 @@
 package com.inolog.config;
 
+import com.inolog.domain.User;
+import com.inolog.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -9,11 +12,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -31,6 +35,7 @@ public class SecurityConfig {
      */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
+        // 해당 경로는 접근 가능
         return web -> web.ignoring()
                 .requestMatchers("/favicon.ico")
                 .requestMatchers("/error")
@@ -47,10 +52,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                // 권한이 없으면 해당 uri 제외하고 접근 불가
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/signup").permitAll()
                         .anyRequest().authenticated()
                 )
+                // login 설정
                 .formLogin(login -> login
                         .loginPage("/auth/login")
                         .loginProcessingUrl("/auth/login")
@@ -58,7 +66,12 @@ public class SecurityConfig {
                         .passwordParameter("password")
                         .defaultSuccessUrl("/")
                 )
-                .userDetailsService(userDetailsService())
+                // cookie 설정
+                .rememberMe(rm -> rm
+                        .rememberMeParameter("remember")
+                        .alwaysRemember(false)
+                        .tokenValiditySeconds(2592000) // 만료일 한달
+                )
                 .csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
@@ -70,19 +83,40 @@ public class SecurityConfig {
      * @return
      */
     @Bean
-    public UserDetailsService userDetailsService() {
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        UserDetails user = User
-                .withUsername("ino")
-                .password("1234")
-                .roles("ADMIN")
-                .build();
-        manager.createUser(user);
-        return manager;
+    public UserDetailsService userDetailsService(UserRepository userRepository) {
+
+        return username -> {
+            User user = userRepository.findByEmail(username)
+                    .orElseThrow(() -> new UsernameNotFoundException(username + "을 찾을 수 없습니다."));
+            return new UserPrincipal(user);
+        };
+
+        // memory 상에서 임시로 만듬
+//        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+//        UserDetails user = User
+//                .withUsername("ino")
+//                .password("1234")
+//                .roles("ADMIN")
+//                .build();
+//        manager.createUser(user);
+//        return manager;
     }
 
+    /**
+     * User Password 인코딩 (Scrypt)
+     * @return
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+
+        return new SCryptPasswordEncoder(
+                16,
+                8,
+                1,
+                32,
+                64);
+
+        // test 용
+//        return NoOpPasswordEncoder.getInstance();
     }
 }
