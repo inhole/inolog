@@ -1,10 +1,20 @@
 package com.inolog.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.inolog.config.handler.Http401Handler;
+import com.inolog.config.handler.Http403Handler;
+import com.inolog.config.handler.LoginFailHandler;
 import com.inolog.domain.User;
 import com.inolog.repository.UserRepository;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -20,13 +30,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import java.io.IOException;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity(debug = true)
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final ObjectMapper objectMapper;
 
     /**
      * 스프링 시큐리티 기능 비활성화
@@ -54,8 +72,12 @@ public class SecurityConfig {
         http
                 // 권한이 없으면 해당 uri 제외하고 접근 불가
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/signup").permitAll()
+                        .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("/auth/signup").permitAll()
+                        .requestMatchers("/user").hasRole("USER")
+                        .requestMatchers("/admin").hasRole("ADMIN")
+                        // 관리자 역할이 ( hasRole('ADMIN') ) 있고 쓰기 권한도 ( hasAuthority('WRITE') ) 있어야 접근 가능
+//                            .access(new WebExpressionAuthorizationManager("hasRole('ADMIN') AND hasAuthority('WRITE')"))
                         .anyRequest().authenticated()
                 )
                 // login 설정
@@ -65,7 +87,13 @@ public class SecurityConfig {
                         .usernameParameter("username")
                         .passwordParameter("password")
                         .defaultSuccessUrl("/")
+                        .failureHandler(new LoginFailHandler(objectMapper)) // login 실패 handler
                 )
+                // 예외 처리 custom
+                .exceptionHandling(e -> {
+                    e.accessDeniedHandler(new Http403Handler(objectMapper)); // 인가 실패 ( 권한이 없는 경우 )
+                    e.authenticationEntryPoint(new Http401Handler(objectMapper)); // 인증 실패 ( 로그인 안 한 경우 )
+                })
                 // cookie 설정
                 .rememberMe(rm -> rm
                         .rememberMeParameter("remember")

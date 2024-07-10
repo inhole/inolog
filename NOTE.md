@@ -137,3 +137,7 @@ Vue.js - The Progressive JavaScript Framework
 ### csrf (크로스 사이트 요청 위조)
 - 인증된 사용자가 웹 애플리케이션에 특정 요청을 보내도록 유도하는 공격 행위
 - 생성된 요청이 사용자의 동의를 받았는지 확인할 수 없는 웹 애플리케이션의 CSRF 취약점을 이용
+
+### security
+- role: 역할 -> 관리자, 사용자, 매니저
+- authority: 권한 -> 글쓰기, 글 읽기, 사용자정지시키기
