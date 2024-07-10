@@ -1,6 +1,7 @@
 package com.inolog.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.inolog.config.filter.EmailPasswordAuthFilter;
 import com.inolog.config.handler.Http401Handler;
 import com.inolog.config.handler.Http403Handler;
 import com.inolog.config.handler.LoginFailHandler;
@@ -15,6 +16,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -32,7 +36,11 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.session.security.web.authentication.SpringSessionRememberMeServices;
 
 import java.io.IOException;
 
@@ -45,6 +53,7 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 public class SecurityConfig {
 
     private final ObjectMapper objectMapper;
+    private final UserRepository userRepository;
 
     /**
      * 스프링 시큐리티 기능 비활성화
@@ -80,15 +89,17 @@ public class SecurityConfig {
 //                            .access(new WebExpressionAuthorizationManager("hasRole('ADMIN') AND hasAuthority('WRITE')"))
                         .anyRequest().authenticated()
                 )
+                // form 에서 json 으로 요청 받기 위해 설정
+                .addFilterBefore(emailPasswordAuthFilter(), UsernamePasswordAuthenticationFilter.class)
                 // login 설정
-                .formLogin(login -> login
-                        .loginPage("/auth/login")
-                        .loginProcessingUrl("/auth/login")
-                        .usernameParameter("username")
-                        .passwordParameter("password")
-                        .defaultSuccessUrl("/")
-                        .failureHandler(new LoginFailHandler(objectMapper)) // login 실패 handler
-                )
+//                .formLogin(login -> login
+//                        .loginPage("/auth/login")
+//                        .loginProcessingUrl("/auth/login")
+//                        .usernameParameter("username")
+//                        .passwordParameter("password")
+//                        .defaultSuccessUrl("/")
+//                        .failureHandler(new LoginFailHandler(objectMapper)) // login 실패 handler
+//                )
                 // 예외 처리 custom
                 .exceptionHandling(e -> {
                     e.accessDeniedHandler(new Http403Handler(objectMapper)); // 인가 실패 ( 권한이 없는 경우 )
@@ -106,12 +117,50 @@ public class SecurityConfig {
     }
 
     /**
+     * 커스텀마이징한 유저 정보 인증 필터
+     *
+     * @return
+     */
+    @Bean
+    public EmailPasswordAuthFilter emailPasswordAuthFilter() {
+        EmailPasswordAuthFilter filter = new EmailPasswordAuthFilter("/auth/login", objectMapper);
+        filter.setAuthenticationManager(authenticationManager());
+        // 로그인 성공 url
+        filter.setAuthenticationSuccessHandler(new SimpleUrlAuthenticationSuccessHandler("/"));
+        // 로그인 실패
+        filter.setAuthenticationFailureHandler(new LoginFailHandler(objectMapper));
+        // 세션 발급
+        filter.setSecurityContextRepository(new HttpSessionSecurityContextRepository());
+
+        // 세션 유효기간 1달 설정
+        SpringSessionRememberMeServices rememberMeServices = new SpringSessionRememberMeServices();
+        rememberMeServices.setAlwaysRemember(true);
+        rememberMeServices.setValiditySeconds(3600 * 24 * 30);
+        filter.setRememberMeServices(rememberMeServices);
+
+        return filter;
+    }
+
+    /**
+     * provider 설정
+     *
+     * @return
+     */
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService());
+        provider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(provider);
+    }
+
+    /**
      * 요청 받은 유저정보로 메소드에서 확인
      *
      * @return
      */
     @Bean
-    public UserDetailsService userDetailsService(UserRepository userRepository) {
+    public UserDetailsService userDetailsService() {
 
         return username -> {
             User user = userRepository.findByEmail(username)
