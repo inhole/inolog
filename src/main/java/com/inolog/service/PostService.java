@@ -3,7 +3,9 @@ package com.inolog.service;
 import com.inolog.domain.Post;
 import com.inolog.domain.PostEditor;
 import com.inolog.exception.PostNotFound;
+import com.inolog.exception.UserNotFound;
 import com.inolog.repository.PostRepository;
+import com.inolog.repository.UserRepository;
 import com.inolog.request.PostCreate;
 import com.inolog.request.PostEdit;
 import com.inolog.request.PostSearch;
@@ -21,10 +23,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostService {
 
+    private final UserRepository userRepository;
     private final PostRepository postRepository;
 
-    public void write(PostCreate postCreate) {
+    public void write(Long userId, PostCreate postCreate) {
+        var user = userRepository.findById(userId)
+                .orElseThrow(UserNotFound::new);
+
         Post post = Post.builder()
+                .user(user)
                 .title(postCreate.getTitle())
                 .content(postCreate.getContent())
                 .build();

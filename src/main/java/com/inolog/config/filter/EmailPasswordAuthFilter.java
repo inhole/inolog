@@ -49,11 +49,12 @@ public class EmailPasswordAuthFilter extends AbstractAuthenticationProcessingFil
         EmailPassword emailPassword = objectMapper.readValue(request.getInputStream(), EmailPassword.class);
 
         // 2. 이메일과 비밀번호를 사용하여 인증 토큰을 생성합니다.
-        // ... 인증 토큰 추가 예정 > 평문으로 된 password는 빼고 권한을 추가해주는게 좋아 보임
+        // ... 인증 토큰 추가 예정 > 평문으로 된 password는 빼고(빼면 error: 추후 확인) 권한을 추가해주는게 좋아 보임
         UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
                 emailPassword.email,
-                null
-//                emailPassword.password
+//                null
+                emailPassword.password
+                // 사용자에 맞는 권한
         );
 
         // 3. 요청의 추가 정보를 토큰의 details에 설정합니다.

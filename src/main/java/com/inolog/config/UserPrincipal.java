@@ -17,7 +17,9 @@ public class UserPrincipal extends User {
     public UserPrincipal(com.inolog.domain.User user) {
         super(user.getEmail(), user.getPassword(),
                 List.of(
-                        new SimpleGrantedAuthority("ROLE_ADMIN") // 역할을 주려고 하면 앞에 'ROLE_'을 붙혀야 함
+                        // ... TODO : DB에 저장된 회원 권한으로 적용
+                        // 역할을 주려고 하면 앞에 'ROLE_'을 붙혀야 함
+                        new SimpleGrantedAuthority("ROLE_ADMIN")
 
                 ));
         this.userId = user.getId();

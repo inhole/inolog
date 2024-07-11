@@ -35,7 +35,6 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 @Slf4j
 @Configuration
 @EnableWebSecurity(debug = true)
-@EnableMethodSecurity // Controller 단에서 권한 생성을 위해 추가
 @RequiredArgsConstructor
 public class SecurityConfig {
 

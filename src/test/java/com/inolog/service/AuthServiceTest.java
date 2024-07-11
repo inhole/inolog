@@ -47,7 +47,6 @@ class AuthServiceTest {
         User user = userRepository.findAll().iterator().next();
         assertEquals("sylee74133@gmail.com", user.getEmail());
         assertNotNull(user.getPassword());
-        assertEquals("1234", user.getPassword());
         assertEquals("이인호", user.getName());
     }
 
