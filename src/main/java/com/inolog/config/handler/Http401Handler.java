@@ -35,7 +35,7 @@ public class Http401Handler implements AuthenticationEntryPoint {
 //        response.getWriter().write(json);
 
         response.setContentType(APPLICATION_JSON_VALUE);
-        response.setCharacterEncoding(UTF_8.displayName());
+        response.setCharacterEncoding(UTF_8.name());
         response.setStatus(response.SC_UNAUTHORIZED);
         objectMapper.writeValue(response.getWriter(), errorResponse);
 

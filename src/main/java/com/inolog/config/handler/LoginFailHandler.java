@@ -37,7 +37,7 @@ public class LoginFailHandler implements AuthenticationFailureHandler {
 //        response.getWriter().write(json);
 
         response.setContentType(APPLICATION_JSON_VALUE);
-        response.setCharacterEncoding(UTF_8.displayName());
+        response.setCharacterEncoding(UTF_8.name());
         response.setStatus(SC_BAD_REQUEST);
         objectMapper.writeValue(response.getWriter(), errorResponse);
     }

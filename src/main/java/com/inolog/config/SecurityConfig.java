@@ -5,6 +5,7 @@ import com.inolog.config.filter.EmailPasswordAuthFilter;
 import com.inolog.config.handler.Http401Handler;
 import com.inolog.config.handler.Http403Handler;
 import com.inolog.config.handler.LoginFailHandler;
+import com.inolog.config.handler.LoginSuccessHandler;
 import com.inolog.domain.User;
 import com.inolog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -67,13 +68,7 @@ public class SecurityConfig {
         http
                 // 권한이 없으면 해당 uri 제외하고 접근 불가
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("/auth/signup").permitAll()
-//                        .requestMatchers("/user").hasRole("USER")
-//                        .requestMatchers("/admin").hasRole("ADMIN")
-                        // 관리자 역할이 ( hasRole('ADMIN') ) 있고 쓰기 권한도 ( hasAuthority('WRITE') ) 있어야 접근 가능
-//                            .access(new WebExpressionAuthorizationManager("hasRole('ADMIN') AND hasAuthority('WRITE')"))
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 // form 에서 json 으로 요청 받기 위해 설정
                 .addFilterBefore(emailPasswordAuthFilter(), UsernamePasswordAuthenticationFilter.class)
@@ -112,7 +107,7 @@ public class SecurityConfig {
         EmailPasswordAuthFilter filter = new EmailPasswordAuthFilter("/auth/login", objectMapper);
         filter.setAuthenticationManager(authenticationManager());
         // 로그인 성공 url
-        filter.setAuthenticationSuccessHandler(new SimpleUrlAuthenticationSuccessHandler("/"));
+        filter.setAuthenticationSuccessHandler(new LoginSuccessHandler(objectMapper));
         // 로그인 실패
         filter.setAuthenticationFailureHandler(new LoginFailHandler(objectMapper));
         // 세션 발급
