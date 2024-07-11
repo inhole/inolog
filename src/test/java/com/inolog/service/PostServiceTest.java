@@ -1,11 +1,15 @@
 package com.inolog.service;
 
 import com.inolog.domain.Post;
+import com.inolog.domain.User;
 import com.inolog.exception.PostNotFound;
+import com.inolog.exception.UserNotFound;
 import com.inolog.repository.PostRepository;
+import com.inolog.repository.UserRepository;
 import com.inolog.request.PostCreate;
 import com.inolog.request.PostEdit;
 import com.inolog.request.PostSearch;
+import com.inolog.request.Signup;
 import com.inolog.response.PostResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +37,12 @@ class PostServiceTest {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private AuthService authService;
+
+    @Autowired
+    private UserRepository userRepository;
+
     @BeforeEach
     void clean() {
         postRepository.deleteAll();
@@ -42,13 +52,22 @@ class PostServiceTest {
     @DisplayName("글 작성")
     void test1() {
         // given
+        Signup signup = Signup.builder()
+                .email("sylee74133@gmail.com")
+                .password("1234")
+                .name("이인호")
+                .build();
+        authService.signup(signup);
+
+        User user = userRepository.findByEmail(signup.getEmail()).orElseThrow(UserNotFound::new);
+
         PostCreate postCreate = PostCreate.builder()
                 .title("제목입니다.")
                 .content("내용입니다.")
                 .build();
 
         // when
-        postService.write(postCreate);
+        postService.write(user.getId(),postCreate);
 
         // then
         assertEquals(1L, postRepository.count());
