@@ -2,8 +2,12 @@ package com.inolog.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inolog.annotation.CustomWithMockUser;
+import com.inolog.annotation.InologMockUser;
+import com.inolog.config.UserPrincipal;
 import com.inolog.domain.Post;
+import com.inolog.domain.User;
 import com.inolog.repository.PostRepository;
+import com.inolog.repository.UserRepository;
 import com.inolog.request.PostCreate;
 import com.inolog.request.PostEdit;
 import com.inolog.service.PostService;
@@ -44,17 +48,19 @@ class PostControllerTest {
 
     @Autowired
     private PostRepository postRepository;
-    @Autowired
-    private PostService postService;
 
-    @BeforeEach
+    @Autowired
+    private UserRepository userRepository;
+
+    @AfterEach
     public void clean() {
+        userRepository.deleteAll();
         postRepository.deleteAll();
     }
 
 
     @Test
-    @WithMockUser(username = "sylee74133@gmail.com", roles = {"ADMIN"})
+    @InologMockUser
     @DisplayName("글 작성 요청시 title값은 필수다.")
     void test2() throws Exception {
         // given
@@ -77,7 +83,8 @@ class PostControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "sylee74133@gmail.com", roles = {"ADMIN"})
+    @InologMockUser
+//    @WithMockUser(username = "sylee74133@gmail.com", roles = {"ADMIN"})
     @DisplayName("글 작성")
     void test3() throws Exception {
         // given
@@ -108,9 +115,17 @@ class PostControllerTest {
     @DisplayName("글 1개 조회")
     void test4() throws Exception {
         // given
+        User user = User.builder()
+                .name("이인호")
+                .email("sylee74133@gmail.com")
+                .password("1234")
+                .build();
+        userRepository.save(user);
+
         Post post = Post.builder()
                 .title("12345678901234")
                 .content("bar")
+                .user(user)
                 .build();
         postRepository.save(post);
 
@@ -130,10 +145,18 @@ class PostControllerTest {
     @DisplayName("글 여러개 조회")
     void test5() throws Exception {
         // given
+        User user = User.builder()
+                .name("이인호")
+                .email("sylee74133@gmail.com")
+                .password("1234")
+                .build();
+        userRepository.save(user);
+
         List<Post> requestPosts = IntStream.range(0, 20)
                 .mapToObj(i -> Post.builder()
                         .title("호돌맨 제목 " + i)
                         .content("반포자이 " + i)
+                        .user(user)
                         .build())
                 .collect(Collectors.toList());
         postRepository.saveAll(requestPosts);
@@ -153,10 +176,18 @@ class PostControllerTest {
     @DisplayName("페이지를 0으로 요청하면 첫 페이지를 가져온다.")
     void test6() throws Exception {
         // given
+        User user = User.builder()
+                .name("이인호")
+                .email("sylee74133@gmail.com")
+                .password("1234")
+                .build();
+        userRepository.save(user);
+
         List<Post> requestPosts = IntStream.range(0, 20)
                 .mapToObj(i -> Post.builder()
                         .title("호돌맨 제목 " + i)
                         .content("반포자이 " + i)
+                        .user(user)
                         .build())
                 .collect(Collectors.toList());
         postRepository.saveAll(requestPosts);
@@ -172,13 +203,16 @@ class PostControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "sylee74133@gmail.com", roles = {"ADMIN"})
+    @InologMockUser
     @DisplayName("글 제목 수정")
     void test7() throws Exception {
         // given
+        User user = userRepository.findAll().get(0);
+
         Post post = Post.builder()
                 .title("호돌맨")
                 .content("반포자이")
+                .user(user)
                 .build();
 
         postRepository.save(post);
@@ -198,13 +232,16 @@ class PostControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "sylee74133@gmail.com", roles = {"ADMIN"})
+    @InologMockUser
     @DisplayName("게시글 삭제")
     void test8() throws Exception {
         // given
+        User user = userRepository.findAll().get(0);
+
         Post post = Post.builder()
                 .title("호돌맨")
                 .content("반포자이")
+                .user(user)
                 .build();
         postRepository.save(post);
 
@@ -226,7 +263,7 @@ class PostControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "sylee74133@gmail.com", roles = {"ADMIN"})
+    @InologMockUser
     @DisplayName("존재하지 않는 게시글 수정")
     void test10() throws Exception {
         // expected

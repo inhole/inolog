@@ -1,9 +1,12 @@
 package com.inolog.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.inolog.annotation.InologMockUser;
 import com.inolog.domain.Post;
 import com.inolog.repository.PostRepository;
+import com.inolog.repository.UserRepository;
 import com.inolog.request.PostCreate;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,7 +44,16 @@ public class PostControllerDocTest {
     private PostRepository postRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private ObjectMapper objectMapper;
+
+    @AfterEach
+    void clean() {
+        postRepository.deleteAll();
+        userRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("글 단건 조회")
@@ -71,7 +83,7 @@ public class PostControllerDocTest {
     }
 
     @Test
-    @WithMockUser(username = "sylee74133@gmail.com", roles = {"ADMIN"})
+    @InologMockUser
     @DisplayName("글 등록 테스트")
     void test2() throws Exception {
         //given

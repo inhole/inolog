@@ -46,20 +46,19 @@ class PostServiceTest {
     @BeforeEach
     void clean() {
         postRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
     @DisplayName("글 작성")
     void test1() {
         // given
-        Signup signup = Signup.builder()
+        var user = User.builder()
+                .name("이인호")
                 .email("sylee74133@gmail.com")
                 .password("1234")
-                .name("이인호")
                 .build();
-        authService.signup(signup);
-
-        User user = userRepository.findByEmail(signup.getEmail()).orElseThrow(UserNotFound::new);
+        userRepository.save(user);
 
         PostCreate postCreate = PostCreate.builder()
                 .title("제목입니다.")
