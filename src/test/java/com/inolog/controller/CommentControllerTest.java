@@ -9,6 +9,7 @@ import com.inolog.repository.UserRepository;
 import com.inolog.repository.comment.CommentRepository;
 import com.inolog.repository.post.PostRepository;
 import com.inolog.request.comment.CommentCreate;
+import com.inolog.request.comment.CommentDelete;
 import com.inolog.request.post.PostCreate;
 import com.inolog.request.post.PostEdit;
 import org.junit.jupiter.api.AfterEach;
@@ -67,7 +68,6 @@ class CommentControllerTest {
 
 
     @Test
-    @InologMockUser
     @DisplayName("댓글 작성")
     void test1() throws Exception {
         // given
@@ -96,7 +96,7 @@ class CommentControllerTest {
         mockMvc.perform(post("/posts/{postId}/comments", post.getId())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json))
-                .andDo(MockMvcResultHandlers.print())
+                .andDo(print())
                 .andExpect(status().isOk());
 
         assertEquals(1L, commentRepository.count());
@@ -108,5 +108,42 @@ class CommentControllerTest {
         assertEquals("댓글입니다. 10 글자 제한 ......", savedComment.getContent());
     }
 
+    @Test
+    @DisplayName("댓글 삭제")
+    void test2() throws Exception {
+        // given
+        User user = User.builder()
+                .name("이인호")
+                .email("sylee74133@gmail.com")
+                .password("1234")
+                .build();
+        userRepository.save(user);
 
+        Post post = Post.builder()
+                .title("12345678901234")
+                .content("bar")
+                .user(user)
+                .build();
+        postRepository.save(post);
+
+        String encryptedPassword = passwordEncoder.encode("123456");
+
+        Comment comment = Comment.builder()
+                .author("이노")
+                .password(encryptedPassword)
+                .content("하하하하하하하하하하하하하")
+                .build();
+        comment.setPost(post);
+        commentRepository.save(comment);
+
+        CommentDelete commentDelete = new CommentDelete("123456");
+        String json = objectMapper.writeValueAsString(commentDelete);
+
+        // expected
+        mockMvc.perform(post("/comments/{commentId}/delete", comment.getId())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(json))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 }

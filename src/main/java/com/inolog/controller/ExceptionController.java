@@ -30,9 +30,15 @@ public class ExceptionController {
     5. ControllerAdvice의 ExceptionHandler 메소드를 invoke하여 예외를 반환함
 */
 
+    /**
+     * MethodArgumentNotValidException 의 예외처리
+     * 400 에러코드
+     * @param e
+     * @return
+     */
+    @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseBody
     public ErrorResponse invalidRequestHandler(MethodArgumentNotValidException e) {
         ErrorResponse response =  ErrorResponse.builder()
                 .code("400")
@@ -45,6 +51,11 @@ public class ExceptionController {
         return response;
     }
 
+    /**
+     * RuntimeException 의 예외처리
+     * @param e
+     * @return
+     */
     @ResponseBody
     @ExceptionHandler(InologException.class)
     public ResponseEntity<ErrorResponse> inologException(InologException e) {
@@ -57,6 +68,27 @@ public class ExceptionController {
                 .build();
 
         ResponseEntity<ErrorResponse> response =  ResponseEntity.status(statusCode)
+                .body(body);
+
+        return response;
+    }
+
+    /**
+     * 추가적인 예외발생에 대한 처리
+     * @param e
+     * @return
+     */
+    @ResponseBody
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> exception(Exception e) {
+        log.error("예외발생", e);
+
+        ErrorResponse body = ErrorResponse.builder()
+                .code("500")
+                .message(e.getMessage())
+                .build();
+
+        ResponseEntity<ErrorResponse> response =  ResponseEntity.status(500)
                 .body(body);
 
         return response;
