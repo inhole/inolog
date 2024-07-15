@@ -3,9 +3,9 @@ package com.inolog.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inolog.annotation.InologMockUser;
 import com.inolog.domain.Post;
-import com.inolog.repository.PostRepository;
+import com.inolog.repository.post.PostRepository;
 import com.inolog.repository.UserRepository;
-import com.inolog.request.PostCreate;
+import com.inolog.request.post.PostCreate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,9 +15,6 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.restdocs.payload.PayloadDocumentation;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;

@@ -3,13 +3,11 @@ package com.inolog.service;
 import com.inolog.domain.Post;
 import com.inolog.domain.User;
 import com.inolog.exception.PostNotFound;
-import com.inolog.exception.UserNotFound;
-import com.inolog.repository.PostRepository;
+import com.inolog.repository.post.PostRepository;
 import com.inolog.repository.UserRepository;
-import com.inolog.request.PostCreate;
-import com.inolog.request.PostEdit;
-import com.inolog.request.PostSearch;
-import com.inolog.request.Signup;
+import com.inolog.request.post.PostCreate;
+import com.inolog.request.post.PostEdit;
+import com.inolog.request.post.PostSearch;
 import com.inolog.response.PostResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,16 +15,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @SpringBootTest
 class PostServiceTest {

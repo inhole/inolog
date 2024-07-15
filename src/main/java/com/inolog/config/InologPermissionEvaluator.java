@@ -1,7 +1,7 @@
 package com.inolog.config;
 
 import com.inolog.exception.PostNotFound;
-import com.inolog.repository.PostRepository;
+import com.inolog.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.PermissionEvaluator;

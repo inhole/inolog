@@ -1,7 +1,7 @@
-package com.inolog.repository;
+package com.inolog.repository.post;
 
 import com.inolog.domain.Post;
-import com.inolog.request.PostSearch;
+import com.inolog.request.post.PostSearch;
 
 import java.util.List;
 

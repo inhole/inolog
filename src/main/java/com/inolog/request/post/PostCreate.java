@@ -1,6 +1,5 @@
-package com.inolog.request;
+package com.inolog.request.post;
 
-import com.inolog.exception.InvalidRequest;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;

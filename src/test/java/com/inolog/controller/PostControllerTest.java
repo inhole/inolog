@@ -1,29 +1,18 @@
 package com.inolog.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.inolog.annotation.CustomWithMockUser;
 import com.inolog.annotation.InologMockUser;
-import com.inolog.config.UserPrincipal;
 import com.inolog.domain.Post;
 import com.inolog.domain.User;
-import com.inolog.repository.PostRepository;
+import com.inolog.repository.post.PostRepository;
 import com.inolog.repository.UserRepository;
-import com.inolog.request.PostCreate;
-import com.inolog.request.PostEdit;
-import com.inolog.service.PostService;
-import org.assertj.core.api.MatcherAssert;
-import org.hamcrest.Matchers;
+import com.inolog.request.post.PostCreate;
+import com.inolog.request.post.PostEdit;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 import java.util.stream.Collectors;

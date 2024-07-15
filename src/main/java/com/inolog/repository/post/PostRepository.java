@@ -1,4 +1,4 @@
-package com.inolog.repository;
+package com.inolog.repository.post;
 
 import com.inolog.domain.Post;
 import org.springframework.data.jpa.repository.JpaRepository;

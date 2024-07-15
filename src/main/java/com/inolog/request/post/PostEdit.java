@@ -1,4 +1,4 @@
-package com.inolog.request;
+package com.inolog.request.post;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;

@@ -1,6 +1,6 @@
 package com.inolog.config;
 
-import com.inolog.repository.PostRepository;
+import com.inolog.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,9 +1,9 @@
 package com.inolog.controller;
 
 import com.inolog.config.UserPrincipal;
-import com.inolog.request.PostCreate;
-import com.inolog.request.PostEdit;
-import com.inolog.request.PostSearch;
+import com.inolog.request.post.PostCreate;
+import com.inolog.request.post.PostEdit;
+import com.inolog.request.post.PostSearch;
 import com.inolog.response.PostResponse;
 import com.inolog.service.PostService;
 import jakarta.validation.Valid;
