@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import axios from 'axios';
-import {ref} from "vue";
-import {useRouter} from "vue-router";
+import axios from 'axios'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-const router = useRouter();
+const router = useRouter()
 
-const posts = ref([]);
+const posts = ref([])
 
-axios.get("/api/posts?page=1&size=5").then((response) => {
+axios.get('/api/posts?page=1&size=5').then((response) => {
   response.data.forEach((r: any) => {
-    posts.value.push(r);
+    posts.value.push(r)
   })
-});
-
+})
 </script>
 
 <template>
@@ -32,7 +31,6 @@ axios.get("/api/posts?page=1&size=5").then((response) => {
       <div class="content">
         {{ post.content }}
       </div>
-
     </li>
   </ul>
 </template>
@@ -43,7 +41,7 @@ ul {
   padding: 0;
 
   li {
-    margin-bottom: 2rem;
+    margin-bottom: 2.4rem;
 
     .title {
       a {
@@ -76,7 +74,6 @@ ul {
         color: #6b6b6b;
       }
     }
-
   }
 }
 </style>

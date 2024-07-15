@@ -1,18 +1,14 @@
-<script setup lang="ts">
-import {RouterView} from "vue-router";
-</script>
-
 <template>
-  <el-main calss="content">
-
+  <el-main class="content">
     <el-row>
       <el-col>
-        <RouterView/>
+        <RouterView />
       </el-col>
     </el-row>
-
   </el-main>
 </template>
+
+<script setup lang="ts"></script>
 
 <style scoped>
 .content {
