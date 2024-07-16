@@ -1,5 +1,9 @@
 import type { AxiosError } from 'axios'
 
+/**
+ * 공통 HttpError 처리 클래스
+ * 백엔드에서 내려주는 값 맵핑
+ */
 export default class HttpError {
   private readonly code: string
   private readonly message: string
