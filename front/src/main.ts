@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import 'reflect-metadata' // tsyringe 로 추가 설정
 
 import App from './App.vue'
 import router from './router'

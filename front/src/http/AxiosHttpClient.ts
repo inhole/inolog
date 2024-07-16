@@ -6,6 +6,7 @@ import axios, {
 } from 'axios'
 import { ElMessage } from 'element-plus'
 import HttpError from '@/http/HttpError'
+import { injectable, singleton } from 'tsyringe'
 
 export type HttpRequestConfig = {
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
@@ -15,14 +16,15 @@ export type HttpRequestConfig = {
 }
 
 /**
- * axios custom 처리 ( 요청을 담당 )
+ * axios 설정 ( 요청을 담당 )
  * 3초 timeout 설정
  * ... 등
  */
+@singleton()
 export default class AxiosHttpClient {
   private readonly client: AxiosInstance = axios.create({
     timeout: 3000,
-    timeoutErrorMessage: '네트워크 상태를 확인해주세요. :('
+    timeoutErrorMessage: '힝...'
   })
 
   public async request(config: HttpRequestConfig) {

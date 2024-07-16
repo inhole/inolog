@@ -6,6 +6,10 @@
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
 
+    // tsyringe 추가 tsconfig.json 에서는 왜인지.. 적용이 안됨
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
