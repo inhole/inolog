@@ -23,5 +23,11 @@ spring:
         default-page-size: 20
         one-indexed-parameters: true
 
+  # 서버 구동 시 data.sql 읽음
+  sql:
+    init:
+      mode: always
+
 inolog:
   jwt-key: 3l3Cw10+O7gzomDsD4c7F1D7v3r3LBJ8MvMx8DJnQKE=
+
