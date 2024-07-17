@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -17,10 +18,15 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // key
 
+    @Column(nullable = false)
     private String title;
 
     @Lob
+    @Column(nullable = false)
     private String content; // 긴텍스트
+
+    @Column(nullable = false)
+    private LocalDateTime regDate;
 
     @ManyToOne
     @JoinColumn
@@ -34,6 +40,7 @@ public class Post {
         this.title = title;
         this.content = content;
         this.user = user;
+        this.regDate = LocalDateTime.now();
     }
 
     public PostEditor.PostEditorBuilder toEditor() {

@@ -15,24 +15,7 @@ const posts = ref([])
 </script>
 
 <template>
-  <ul>
-    <!--    <li v-for="post in posts" :key="post.id">-->
-    <!--      <div class="title">-->
-    <!--        <router-link :to="{ name: 'read', params: { postId: post.id } }">-->
-    <!--          {{ post.title }}-->
-    <!--        </router-link>-->
-    <!--      </div>-->
-
-    <!--      <div class="sub d-flex">-->
-    <!--        <div class="category">개발</div>-->
-    <!--        <div class="regDate">2024-07-01</div>-->
-    <!--      </div>-->
-
-    <!--      <div class="content">-->
-    <!--        {{ post.content }}-->
-    <!--      </div>-->
-    <!--    </li>-->
-  </ul>
+  <ul></ul>
 </template>
 
 <style scoped lang="scss">

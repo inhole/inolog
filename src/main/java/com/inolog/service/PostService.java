@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,11 +44,7 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(PostNotFound::new);
 
-        return PostResponse.builder()
-                .id(post.getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .build();
+        return new PostResponse(post);
     }
 
     public List<PostResponse> getList(PostSearch postSearch) {
