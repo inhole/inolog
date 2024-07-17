@@ -1,61 +1,55 @@
 <script setup lang="ts">
-import axios from 'axios'
-import { ref } from 'vue'
+import { onMounted, reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import Post from '@/components/Post.vue'
+import { container } from 'tsyringe'
+import PostRepository from '@/repository/PostRepository'
+
+const POST_REPOSITORY = container.resolve(PostRepository)
 
 const router = useRouter()
 
-const posts = ref([])
+const state = reactive<any>({
+  postList: []
+})
 
-// axios.get('/api/posts?page=1&size=5').then((response) => {
-//   response.data.forEach((r: any) => {
-//     posts.value.push(r)
-//   })
-// })
+function getList() {
+  POST_REPOSITORY.getList().then((postList) => {
+    console.log('>>>', postList)
+    state.postList = postList
+  })
+}
+
+onMounted(() => {
+  getList()
+})
 </script>
 
 <template>
-  <ul></ul>
+  <div class="content">
+    <ul class="posts">
+      <li v-for="post in state.postList" :key="post.id">
+        <Post :post="post" />
+      </li>
+    </ul>
+  </div>
 </template>
 
 <style scoped lang="scss">
-ul {
+.content {
+  height: calc(100vh - 60px - 2rem - 20px - 1.5rem);
+  padding: 0 1rem 0 1rem;
+}
+
+.posts {
   list-style: none;
   padding: 0;
 
   li {
     margin-bottom: 2.4rem;
 
-    .title {
-      a {
-        font-size: 1.1rem;
-        color: #383838;
-        text-decoration: none;
-      }
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-
-    .content {
-      font-size: 0.85rem;
-      margin-top: 8px;
-      color: #7e7e7e;
-    }
-
     &:last-child {
       margin-bottom: 0;
-    }
-
-    .sub {
-      margin-top: 9px;
-      font-size: 0.78rem;
-
-      .regDate {
-        margin-left: 10px;
-        color: #6b6b6b;
-      }
     }
   }
 }

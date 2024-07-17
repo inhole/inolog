@@ -10,11 +10,16 @@
 
 ## 비밀번호 암호화
 
-1. 해시
-2. 해시 방식
-   1. SHA1
-   2. SHA256
-   3. MD5
-   4. 왜 이런걸로 비번 암호화 하면 안되는지
-3. BCrypt, SCrypt, Argon2
-   1. salt 값
+# Vue3 dependencies :
+````
+    "@js-joda/core": "^5.6.3", // 날짜 포맷
+    "bootstrap": "^5.3.3",
+    "class-transformer": "^0.5.1", // 파싱 관련
+    "element-plus": "^2.7.6", // css 프레임워크
+    "normalize.css": "^8.0.1",
+    "pinia": "^2.1.7", // 상태관리
+    "reflect-metadata": "^0.2.2",
+    "tsyringe": "^4.8.0", // DI 관련
+    "vue": "^3.4.29",
+    "vue-router": "^4.3.3"
+````
