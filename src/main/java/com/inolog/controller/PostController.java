@@ -4,6 +4,7 @@ import com.inolog.config.UserPrincipal;
 import com.inolog.request.post.PostCreate;
 import com.inolog.request.post.PostEdit;
 import com.inolog.request.post.PostSearch;
+import com.inolog.response.PagingResponse;
 import com.inolog.response.PostResponse;
 import com.inolog.service.PostService;
 import jakarta.validation.Valid;
@@ -48,7 +49,7 @@ public class PostController {
      * @return
      */
     @GetMapping("/posts")
-    public List<PostResponse> getList(@ModelAttribute PostSearch postSearch) {
+    public PagingResponse<PostResponse> getList(@ModelAttribute PostSearch postSearch) {
         return postService.getList(postSearch);
     }
 

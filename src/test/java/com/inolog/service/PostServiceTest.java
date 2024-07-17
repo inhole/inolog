@@ -8,6 +8,7 @@ import com.inolog.repository.UserRepository;
 import com.inolog.request.post.PostCreate;
 import com.inolog.request.post.PostEdit;
 import com.inolog.request.post.PostSearch;
+import com.inolog.response.PagingResponse;
 import com.inolog.response.PostResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -103,14 +104,15 @@ class PostServiceTest {
 
         PostSearch postSearch = PostSearch.builder()
                 .page(1)
+                .size(10)
                 .build();
 
         // when
-        List<PostResponse> posts = postService.getList(postSearch);
+        PagingResponse<PostResponse> posts = postService.getList(postSearch);
 
         // then
-        assertEquals(10L, posts.size());
-        assertEquals("호돌맨 제목 19", posts.get(0).getTitle());
+        assertEquals(10L, posts.getSize());
+        assertEquals("호돌맨 제목 19", posts.getItems().get(0).getTitle());
     }
 
     @Test
