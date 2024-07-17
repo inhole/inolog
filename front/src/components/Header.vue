@@ -1,25 +1,43 @@
-<template>
-  <!--  <el-header class="header">-->
-  <!--    <el-menu mode="horizontal" router>-->
-  <!--      <el-menu-item index="/">Home</el-menu-item>-->
-  <!--      <el-menu-item index="/login">로그인</el-menu-item>-->
-  <!--      <el-menu-item index="/write">글 작성</el-menu-item>-->
-  <!--    </el-menu>-->
-  <!--  </el-header>-->
+<script setup lang="ts">
+import { container } from 'tsyringe'
+import UserRepository from '@/repository/UserRepository'
+import { onBeforeMount, reactive } from 'vue'
+import ProfileRepository from '@/repository/ProfileRepository'
+import type UserProfile from '@/entity/user/UserProfile'
 
+const USER_REPOSITORY = container.resolve(UserRepository)
+const PROFILE_REPOSITORY = container.resolve(ProfileRepository)
+
+const state = reactive<UserProfile | any>({
+  profile: null
+})
+
+onBeforeMount(() => {
+  USER_REPOSITORY.getProfile().then((profile) => {
+    PROFILE_REPOSITORY.setProfile(profile)
+    state.profile = profile
+  })
+})
+
+function logout() {
+  PROFILE_REPOSITORY.clear()
+  location.href = '/api/logout'
+}
+</script>
+
+<template>
   <div class="affix-container">
     <el-affix target=".affix-container" :offset="70" style="height: 100px">
       <div class="title">이노로그</div>
       <div class="menu">
-        <router-link :to="{ name: 'home' }">글 목록</router-link>
-        <router-link :to="{ name: 'login' }">로그인</router-link>
-        <router-link :to="{ name: 'write' }">글 작성</router-link>
+        <router-link to="/">글 목록</router-link>
+        <router-link v-if="state.profile !== null" to="/write">글 작성</router-link>
+        <router-link v-if="state.profile == null" to="/login">로그인</router-link>
+        <a href="#" v-else @click="logout()">({{ state.profile.name }}) 로그아웃</a>
       </div>
     </el-affix>
   </div>
 </template>
-
-<script setup lang="ts"></script>
 
 <style scoped lang="scss">
 .affix-container {

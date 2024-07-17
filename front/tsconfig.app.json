@@ -9,7 +9,7 @@
     // tsyringe 추가 tsconfig.json 에서는 왜인지.. 적용이 안됨
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-
+    "noImplicitAny": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
