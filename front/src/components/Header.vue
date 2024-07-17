@@ -11,7 +11,7 @@
     <el-affix target=".affix-container" :offset="70" style="height: 100px">
       <div class="title">이노로그</div>
       <div class="menu">
-        <router-link :to="{ name: 'home' }">Home</router-link>
+        <router-link :to="{ name: 'home' }">글 목록</router-link>
         <router-link :to="{ name: 'login' }">로그인</router-link>
         <router-link :to="{ name: 'write' }">글 작성</router-link>
       </div>
