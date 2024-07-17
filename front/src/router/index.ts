@@ -24,8 +24,8 @@ const router = createRouter({
       component: WriteView
     },
     {
-      path: '/read/:postId',
-      name: 'read',
+      path: '/post/:postId',
+      name: 'post',
       component: ReadView,
       props: true
     },
