@@ -7,6 +7,7 @@ import UserProfile from '@/entity/user/UserProfile'
 export default class UserRepository {
   constructor(@inject(HttpRepository) private readonly httpRepository: HttpRepository) {}
 
+  // 로그인
   public login(request: Login) {
     return this.httpRepository.post({
       path: '/api/auth/login',
@@ -14,6 +15,7 @@ export default class UserRepository {
     })
   }
 
+  // 유저 정보 조회
   public getProfile() {
     return this.httpRepository.get<UserProfile>(
       {

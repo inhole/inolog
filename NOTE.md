@@ -141,3 +141,8 @@ Vue.js - The Progressive JavaScript Framework
 ### security
 - role: 역할 -> 관리자, 사용자, 매니저
 - authority: 권한 -> 글쓰기, 글 읽기, 사용자정지시키기
+
+### 배포
+- front 빌드 후 빌드 된 파일을 애플리케이션 밑 resources > static 옮김
+- ./gradlew build 명령어 실행 -x text 붙히면 테스트 실행 안함
+- 

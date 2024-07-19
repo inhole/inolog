@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { getCurrentInstance, reactive } from 'vue'
+import { reactive } from 'vue'
 import Login from '@/entity/user/Login'
-import axios, { type AxiosError, type AxiosResponse } from 'axios'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
-import AxiosHttpClient from '@/http/AxiosHttpClient'
 import type HttpError from '@/http/HttpError'
 import UserRepository from '@/repository/UserRepository'
 import { container } from 'tsyringe'
@@ -21,7 +19,9 @@ function doLogin() {
   USER_REPOSITORY.login(state.login)
     .then((data: any) => {
       ElMessage({ type: 'success', message: '환영합니다 :)' })
+      // Header.vue 에 로그인 정보를 읽어야 하는 이슈가 있어 아래로 변경
       location.href = '/'
+      // router.replace('/')
     })
     .catch((e: HttpError) => {
       ElMessage({ type: 'error', message: e.getMessage() })

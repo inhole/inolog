@@ -3,6 +3,8 @@ import { defineProps, onMounted, reactive } from 'vue'
 import { container } from 'tsyringe'
 import PostRepository from '@/repository/PostRepository'
 import Post from '@/entity/post/Post'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { useRouter } from 'vue-router'
 
 // router 설정 > index.ts 에서 지정한 postId 가져오기
 const props = defineProps<{
@@ -27,6 +29,22 @@ function getPost() {
     .catch((e) => {
       console.log(e)
     })
+}
+
+const router = useRouter()
+
+function remove() {
+  ElMessageBox.confirm('정말로 삭제하시겠습니까?', 'warning', {
+    title: '삭제',
+    confirmButtonText: '삭제',
+    cancelButtonText: '취소',
+    type: 'warning'
+  }).then(() => {
+    POST_REPOSITORY.delete(props.postId).then(() => {
+      ElMessage({ type: 'success', message: '성공적으로 삭제되었습니다' })
+      router.back()
+    })
+  })
 }
 
 onMounted(() => {
@@ -57,7 +75,7 @@ onMounted(() => {
 
       <div class="footer">
         <el-button type="primary" size="small" plain>수정</el-button>
-        <el-button type="danger" size="small" plain>삭제</el-button>
+        <el-button type="danger" size="small" plain @click="remove()">삭제</el-button>
       </div>
     </el-col>
   </el-row>
