@@ -2,6 +2,7 @@ import HttpRepository from '@/repository/HttpRepository'
 import { inject, singleton } from 'tsyringe'
 import type PostWrite from '@/entity/post/PostWrite'
 import Post from '@/entity/post/Post'
+import type { UnwrapRef } from 'vue'
 
 @singleton()
 export default class PostRepository {
@@ -30,6 +31,13 @@ export default class PostRepository {
   public delete(postId: number) {
     return this.httpRepository.delete({
       path: `/api/posts/${postId}`
+    })
+  }
+
+  public edit(postId: number, request: Post | any) {
+    return this.httpRepository.patch({
+      path: `/api/posts/${postId}`,
+      body: request
     })
   }
 }

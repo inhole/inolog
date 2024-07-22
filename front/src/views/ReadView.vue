@@ -33,6 +33,10 @@ function getPost() {
 
 const router = useRouter()
 
+function edit() {
+  router.push(`/edit/${props.postId}`)
+}
+
 function remove() {
   ElMessageBox.confirm('정말로 삭제하시겠습니까?', 'warning', {
     title: '삭제',
@@ -74,7 +78,7 @@ onMounted(() => {
       </div>
 
       <div class="footer">
-        <el-button type="primary" size="small" plain>수정</el-button>
+        <el-button type="primary" size="small" plain @click="edit()">수정</el-button>
         <el-button type="danger" size="small" plain @click="remove()">삭제</el-button>
       </div>
     </el-col>

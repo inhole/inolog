@@ -1,52 +1,59 @@
 <script setup lang="ts">
-import {defineProps, ref} from "vue";
-import {useRouter} from "vue-router";
-import axios from "axios";
+import { defineProps, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import Post from '@/entity/post/Post'
+import { container } from 'tsyringe'
+import PostRepository from '@/repository/PostRepository'
+import { ElMessage } from 'element-plus'
+import type HttpError from '@/http/HttpError'
 
-const title = ref("")
-const content = ref("")
+const router = useRouter()
 
-const router = useRouter();
+const data = reactive({
+  post: new Post()
+})
 
-const post = ref({
-  id: 0,
-  title: "",
-  content: "",
-});
+const props = defineProps<{
+  postId: number
+}>()
 
-const props = defineProps({
-  postId: {
-    type: [Number, String],
-    require: true,
-  },
-});
+const POST_REPOSITORY = container.resolve(PostRepository)
 
-axios.get(`/api/posts/${props.postId}`).then((response) => {
-      post.value = response.data;
-});
+POST_REPOSITORY.get(props.postId).then((response) => {
+  data.post = response
+})
 
 const edit = () => {
-  axios.patch(`/api/posts/${props.postId}`, post.value).then( () => {
-    router.replace({ name: "home" });
-  });
+  POST_REPOSITORY.edit(props.postId, data.post)
+    .then(() => {
+      ElMessage({ type: 'success', message: '글 수정이 완료되었습니다.' })
+      router.replace({ name: 'home' })
+    })
+    .catch((e: HttpError) => {
+      ElMessage({ type: 'error', message: e.getMessage() })
+    })
 }
-
 </script>
 
 <template>
-  <div>
-    <el-input v-model="post.title" type="text" />
-  </div>
+  <el-form label-position="top">
+    <el-form-item label="제목">
+      <el-input
+        v-model="data.post.title"
+        size="large"
+        type="text"
+        placeholder="제목을 입력해주세요"
+      />
+    </el-form-item>
 
-  <div class="mt-2">
-    <el-input v-model="post.content" type="textarea" rows="15"></el-input>
-  </div>
+    <el-form-item label="내용">
+      <el-input v-model="data.post.content" type="textarea" rows="15" alt="내용" />
+    </el-form-item>
 
-  <div class="mt-2 d-flex justify-content-end">
-    <el-button type="warning" @click="edit()">수정완료</el-button>
-  </div>
+    <el-form-item>
+      <el-button type="warning" style="width: 100%" @click="edit()">수정완료</el-button>
+    </el-form-item>
+  </el-form>
 </template>
 
-<style>
-
-</style>
+<style></style>
