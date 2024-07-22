@@ -6,6 +6,7 @@ import { useRouter } from 'vue-router'
 import type HttpError from '@/http/HttpError'
 import UserRepository from '@/repository/UserRepository'
 import { container } from 'tsyringe'
+import { useCounterStore } from '@/stores/counter'
 
 const state = reactive({
   login: new Login()
@@ -13,15 +14,16 @@ const state = reactive({
 
 const router = useRouter()
 
+const store = useCounterStore()
+
 const USER_REPOSITORY = container.resolve(UserRepository)
 
 function doLogin() {
   USER_REPOSITORY.login(state.login)
     .then((data: any) => {
       ElMessage({ type: 'success', message: '환영합니다 :)' })
-      // Header.vue 에 로그인 정보를 읽어야 하는 이슈가 있어 아래로 변경
-      location.href = '/'
-      // router.replace('/')
+      store.getProfile()
+      router.replace('/')
     })
     .catch((e: HttpError) => {
       ElMessage({ type: 'error', message: e.getMessage() })

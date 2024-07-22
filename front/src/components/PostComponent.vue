@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type Post from '@/entity/post/Post'
+import Post from '@/entity/post/Post'
 
 const props = defineProps<{
   post: Post

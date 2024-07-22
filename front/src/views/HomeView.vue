@@ -5,7 +5,7 @@ import PostComponent from '@/components/PostComponent.vue'
 import { container } from 'tsyringe'
 import PostRepository from '@/repository/PostRepository'
 import Paging from '@/entity/data/Paging'
-import Post from '@/entity/post/Post'
+import type Post from '@/entity/post/Post'
 
 const POST_REPOSITORY = container.resolve(PostRepository)
 
@@ -47,7 +47,7 @@ onMounted(() => {
         v-model:current-page="state.postList.page"
         :total="state.postList.totalCount"
         :default-page-size="3"
-        @current-change="(page: Number) => getList(page)"
+        @current-change="(page: number) => getList(page)"
       />
     </div>
   </div>

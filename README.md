@@ -17,7 +17,7 @@
     "class-transformer": "^0.5.1", // 파싱 관련
     "element-plus": "^2.7.6", // css 프레임워크
     "normalize.css": "^8.0.1",
-    "pinia": "^2.1.7", // 상태관리
+    "pinia": "^2.1.7", // 상태관리 (vuex 와 비슷) 
     "reflect-metadata": "^0.2.2",
     "tsyringe": "^4.8.0", // DI 관련
     "vue": "^3.4.29",
