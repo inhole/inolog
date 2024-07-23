@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Getter
@@ -31,15 +33,20 @@ public class Comment {
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
+    private LocalDateTime regDate;
+
     @ManyToOne
     @JoinColumn
     private Post post;
 
     @Builder
-    public Comment(String author, String password, String content) {
+    public Comment(String author, String password, String content, Post post) {
         this.author = author;
         this.password = password;
         this.content = content;
+        this.post = post;
+        this.regDate = LocalDateTime.now();
     }
 
     public void setPost(Post post) {

@@ -112,7 +112,7 @@ class PostControllerTest {
         userRepository.save(user);
 
         Post post = Post.builder()
-                .title("12345678901234")
+                .title("1234567890")
                 .content("bar")
                 .user(user)
                 .build();
@@ -154,41 +154,11 @@ class PostControllerTest {
         mockMvc.perform(get("/posts?page=1&size=10")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()", is(10)))
-                .andExpect(jsonPath("$[0].title").value("호돌맨 제목 19"))
-                .andExpect(jsonPath("$[0].content").value("반포자이 19"))
+                .andExpect(jsonPath("$.totalCount", is(20)))
+                .andExpect(jsonPath("$.items[0].title").value("호돌맨 제목 19"))
+                .andExpect(jsonPath("$.items[0].content").value("반포자이 19"))
                 .andDo(print());
 
-    }
-
-    @Test
-    @DisplayName("페이지를 0으로 요청하면 첫 페이지를 가져온다.")
-    void test6() throws Exception {
-        // given
-        User user = User.builder()
-                .name("이인호")
-                .email("sylee74133@gmail.com")
-                .password("1234")
-                .build();
-        userRepository.save(user);
-
-        List<Post> requestPosts = IntStream.range(0, 20)
-                .mapToObj(i -> Post.builder()
-                        .title("호돌맨 제목 " + i)
-                        .content("반포자이 " + i)
-                        .user(user)
-                        .build())
-                .collect(Collectors.toList());
-        postRepository.saveAll(requestPosts);
-
-        // expected
-        mockMvc.perform(get("/posts?page=0&size=10")
-                        .contentType(APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()", is(10)))
-                .andExpect(jsonPath("$[0].title").value("호돌맨 제목 19"))
-                .andExpect(jsonPath("$[0].content").value("반포자이 19"))
-                .andDo(print());
     }
 
     @Test

@@ -94,8 +94,8 @@ class CommentControllerTest {
 
         // expected
         mockMvc.perform(post("/posts/{postId}/comments", post.getId())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(json))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(json))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -145,5 +145,44 @@ class CommentControllerTest {
                         .content(json))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("댓글 리스트 조회")
+    void test3() throws Exception {
+        // given
+        User user = User.builder()
+                .name("이인호")
+                .email("sylee74133@gmail.com")
+                .password("1234")
+                .build();
+        userRepository.save(user);
+
+        Post post = Post.builder()
+                .title("12345678901234")
+                .content("bar")
+                .user(user)
+                .build();
+        postRepository.save(post);
+
+        List<Comment> requestComments = IntStream.range(0, 20)
+                .mapToObj(i -> Comment.builder()
+                        .author("Ino" + i)
+                        .password("1234")
+                        .content("내용입니다..........")
+                        .post(post)
+                        .build())
+                .collect(Collectors.toList());
+        commentRepository.saveAll(requestComments);
+
+        // expected
+        mockMvc.perform(get("/posts/{postId}/comments?page=1&size=10", post.getId())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalCount", is(20)))
+                .andExpect(jsonPath("$.items[0].author").value("Ino19"))
+                .andExpect(jsonPath("$.items[0].content").value("내용입니다.........."))
+                .andDo(print());
+
     }
 }

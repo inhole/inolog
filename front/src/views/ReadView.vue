@@ -5,11 +5,13 @@ import PostRepository from '@/repository/PostRepository'
 import Post from '@/entity/post/Post'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router'
+import Comments from '@/components/Comments.vue'
 
 // router 설정 > index.ts 에서 지정한 postId 가져오기
 const props = defineProps<{
-  postId: number
+  postId: number | string
 }>()
+const postId = Number(props.postId)
 
 const POST_REPOSITORY = container.resolve(PostRepository)
 
@@ -22,7 +24,7 @@ const state = reactive({
 })
 
 function getPost() {
-  POST_REPOSITORY.get(props.postId)
+  POST_REPOSITORY.get(postId)
     .then((post: Post) => {
       state.post = post
     })
@@ -34,7 +36,7 @@ function getPost() {
 const router = useRouter()
 
 function edit() {
-  router.push(`/edit/${props.postId}`)
+  router.push(`/edit/${postId}`)
 }
 
 function remove() {
@@ -44,7 +46,7 @@ function remove() {
     cancelButtonText: '취소',
     type: 'warning'
   }).then(() => {
-    POST_REPOSITORY.delete(props.postId).then(() => {
+    POST_REPOSITORY.delete(postId).then(() => {
       ElMessage({ type: 'success', message: '성공적으로 삭제되었습니다' })
       router.back()
     })
@@ -86,7 +88,7 @@ onMounted(() => {
 
   <el-row class="comments">
     <el-col>
-      <Comments />
+      <Comments :postId="postId" />
     </el-col>
   </el-row>
 </template>
@@ -100,7 +102,8 @@ onMounted(() => {
 
 .regDate {
   margin-top: 0.5rem;
-  font-size: 0.78rem;
+  margin-bottom: 1rem;
+  font-size: 0.73rem;
   font-weight: 300;
 }
 

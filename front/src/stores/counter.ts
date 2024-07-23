@@ -6,12 +6,6 @@ import UserRepository from '@/repository/UserRepository'
 import ProfileRepository from '@/repository/ProfileRepository'
 
 export const useCounterStore = defineStore('counter', () => {
-  const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
-  function increment() {
-    count.value++
-  }
-
   // 유저 정보 프로필
   const state = reactive<UserProfile | any>({
     profile: null
@@ -32,5 +26,5 @@ export const useCounterStore = defineStore('counter', () => {
     location.href = '/api/logout'
   }
 
-  return { count, doubleCount, increment, state, getProfile, logout }
+  return { state, getProfile, logout }
 })
