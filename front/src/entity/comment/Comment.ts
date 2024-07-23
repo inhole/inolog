@@ -3,4 +3,5 @@ export default class Comment {
   public author = ''
   public password = ''
   public content = ''
+  public regDate = ''
 }

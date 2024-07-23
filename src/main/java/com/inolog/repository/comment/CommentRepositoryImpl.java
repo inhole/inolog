@@ -27,6 +27,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                 .fetchFirst();
 
         List<Comment> items = jpaQueryFactory.selectFrom(comment)
+                .where(post.id.eq(postId))
                 .limit(commentSearch.getSize())
                 .offset(commentSearch.getOffset())
                 .orderBy(comment.id.desc())

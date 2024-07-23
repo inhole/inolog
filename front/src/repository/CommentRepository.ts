@@ -1,6 +1,7 @@
 import { inject, singleton } from 'tsyringe'
 import HttpRepository from '@/repository/HttpRepository'
 import type CommentWrite from '@/entity/comment/CommentWrite'
+import Comment from '@/entity/comment/Comment'
 
 @singleton()
 export default class CommentRepository {
@@ -13,5 +14,12 @@ export default class CommentRepository {
     })
   }
 
-  public getList() {}
+  public getList(postId: number, page: Number) {
+    return this.httpRepository.getList<Comment>(
+      {
+        path: `/api/posts/${postId}/comments?page=${page}&size=3`
+      },
+      Comment
+    )
+  }
 }

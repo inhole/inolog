@@ -1,18 +1,21 @@
 <script setup lang="ts">
-import Comment from '@/components/Comment.vue'
+import CommentComponent from '@/components/CommentComponent.vue'
 import { container } from 'tsyringe'
 import CommentRepository from '@/repository/CommentRepository'
-import { reactive } from 'vue'
+import { onMounted, reactive } from 'vue'
 import CommentWrite from '@/entity/comment/CommentWrite'
+import Comment from '@/entity/comment/Comment'
 import { ElMessage } from 'element-plus'
 import type HttpError from '@/http/HttpError'
 import { useRouter } from 'vue-router'
+import Paging from '@/entity/data/Paging'
 
 const props = defineProps<{
   postId: number
 }>()
 
 const state = reactive({
+  commentList: new Paging<Comment>(),
   commentWrite: new CommentWrite()
 })
 
@@ -22,19 +25,33 @@ function write() {
   COMMENT_REPOSITORY.write(props.postId, state.commentWrite)
     .then(() => {
       ElMessage({ type: `success`, message: '댓글 작성이 완료되었습니다.' })
+      getList()
     })
     .catch((e: HttpError) => {
       ElMessage({ type: 'error', message: e.getMessage() })
     })
 }
+
+function getList(page = 1) {
+  COMMENT_REPOSITORY.getList(props.postId, page).then((commentList) => {
+    console.log('>>>', props.postId, commentList)
+    state.commentList = commentList
+  })
+}
+
+onMounted(() => {
+  getList()
+})
 </script>
 
 <template>
   <div class="totalCount">댓글 0개</div>
 
-  <Comment />
-  <Comment />
-  <Comment />
+  <ul class="deprecation-comment">
+    <li v-for="comment in state.commentList.items" :key="comment.id">
+      <CommentComponent :comment="comment" />
+    </li>
+  </ul>
 
   <el-form label-position="top">
     <el-form-item label="작성자" size="small">

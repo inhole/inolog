@@ -29,7 +29,7 @@ public class CommentController {
     }
 
     /**
-     * 댓글 리스트 조회
+     * 글 댓글 리스트 조회
      * @param postId
      * @return
      */

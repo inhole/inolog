@@ -21,7 +21,6 @@ const state = reactive<StateType>({
 
 function getList(page = 1) {
   POST_REPOSITORY.getList(page).then((postList) => {
-    console.log('>>>', postList)
     state.postList = postList
   })
 }

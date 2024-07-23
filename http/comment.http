@@ -1,0 +1,16 @@
+### 댓글 작성
+
+POST http://localhost:8080/posts/7/comments
+Content-Type: application/json
+
+{
+  "author": "Ino",
+  "password": "123456",
+  "content": "내용내요내욘애뇽내용내용"
+}
+
+### 댓글 조회
+
+GET http://localhost:8080/posts/7/comments?page=1&size=3
+Content-Type: application/json
+
