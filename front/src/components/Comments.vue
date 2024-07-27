@@ -45,7 +45,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="totalCount">댓글 0개</div>
+  <div class="totalCount">댓글 {{ state.commentList.totalCount }}개</div>
 
   <ul class="deprecation-comment">
     <li v-for="comment in state.commentList.items" :key="comment.id">
@@ -53,12 +53,24 @@ onMounted(() => {
     </li>
   </ul>
 
+  <div class="pagination-container">
+    <el-pagination
+      :background="false"
+      size="small"
+      layout="prev, pager, next"
+      v-model:current-page="state.commentList.page"
+      :total="state.commentList.totalCount"
+      :default-page-size="3"
+      @current-change="(page: number) => getList(page)"
+    />
+  </div>
+
   <el-form label-position="top">
     <el-form-item label="작성자" size="small">
       <el-input
         v-model="state.commentWrite.author"
         id="author"
-        placeholder="밥돌맨"
+        placeholder="1~8글자로 입력해주세요."
         size="small"
         minlength="1"
         maxlength="8"
@@ -70,7 +82,7 @@ onMounted(() => {
         v-model="state.commentWrite.password"
         type="password"
         id="password"
-        placeholder="비밀번호"
+        placeholder="6~30글자로 입력해주세요."
         size="small"
         minlength="6"
         maxlength="30"
@@ -81,6 +93,7 @@ onMounted(() => {
       <el-input
         v-model="state.commentWrite.content"
         id="content"
+        placeholder="10~1000자까지 입력해주세요."
         type="textarea"
         :rows="5"
         :autosize="{ minRows: 5, maxRows: 4 }"
@@ -99,5 +112,16 @@ onMounted(() => {
 <style scoped lang="scss">
 .totalCount {
   margin-top: 1rem;
+}
+
+.deprecation-comment {
+  list-style-type: none;
+  padding-left: 0.5rem;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
 }
 </style>

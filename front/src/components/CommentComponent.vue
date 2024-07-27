@@ -12,7 +12,7 @@ const props = defineProps<{
     <el-container>
       <el-aside width="200px">
         <div class="author">{{ props.comment.author }}</div>
-        <div class="regDate">{{ props.comment.regDate }}</div>
+        <div class="regDate">{{ props.comment.getDisplayRegDate() }}</div>
       </el-aside>
       <el-main>{{ props.comment.content }}</el-main>
 
@@ -25,7 +25,7 @@ const props = defineProps<{
 
 <style scoped lang="scss">
 .comment {
-  margin: 1rem;
+  margin: 0.5rem;
   width: 100%;
 
   .header {
@@ -46,7 +46,7 @@ const props = defineProps<{
   .regDate {
     margin-top: 5px;
     color: #797979;
-    font-size: 0.88rem;
+    font-size: 0.8rem;
   }
 
   .content {
