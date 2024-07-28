@@ -45,24 +45,25 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="totalCount">댓글 {{ state.commentList.totalCount }}개</div>
+  <div class="comments" v-if="state.commentList.totalCount > 1">
+    <div class="totalCount">댓글 {{ state.commentList.totalCount }}개</div>
+    <ul class="deprecation-comment">
+      <li v-for="comment in state.commentList.items" :key="comment.id">
+        <CommentComponent :comment="comment" />
+      </li>
+    </ul>
 
-  <ul class="deprecation-comment">
-    <li v-for="comment in state.commentList.items" :key="comment.id">
-      <CommentComponent :comment="comment" />
-    </li>
-  </ul>
-
-  <div class="pagination-container">
-    <el-pagination
-      :background="false"
-      size="small"
-      layout="prev, pager, next"
-      v-model:current-page="state.commentList.page"
-      :total="state.commentList.totalCount"
-      :default-page-size="3"
-      @current-change="(page: number) => getList(page)"
-    />
+    <div class="pagination-container">
+      <el-pagination
+        :background="false"
+        size="small"
+        layout="prev, pager, next"
+        v-model:current-page="state.commentList.page"
+        :total="state.commentList.totalCount"
+        :default-page-size="3"
+        @current-change="(page: number) => getList(page)"
+      />
+    </div>
   </div>
 
   <el-form label-position="top">

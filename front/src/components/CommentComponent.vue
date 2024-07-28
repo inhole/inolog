@@ -1,10 +1,36 @@
 <script setup lang="ts">
 import { Delete } from '@element-plus/icons-vue'
-import type Comment from '@/entity/comment/Comment'
+import Comment from '@/entity/comment/Comment'
+import { container } from 'tsyringe'
+import CommentRepository from '@/repository/CommentRepository'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { useRouter } from 'vue-router'
+import type HttpError from '@/http/HttpError'
 
 const props = defineProps<{
   comment: Comment
 }>()
+
+const router = useRouter()
+const COMMENT_REPOSITORY = container.resolve(CommentRepository)
+
+function deleteComment() {
+  ElMessageBox.confirm('정말로 삭제하시겠습니까?', 'warning', {
+    title: '삭제',
+    confirmButtonText: '삭제',
+    cancelButtonText: '취소',
+    type: 'warning'
+  }).then(() => {
+    COMMENT_REPOSITORY.delete(props.comment)
+      .then(() => {
+        ElMessage({ type: `success`, message: '댓글 삭제가 완료되었습니다.' })
+        router.back()
+      })
+      .catch((e: HttpError) => {
+        ElMessage({ type: 'error', message: e.getMessage() })
+      })
+  })
+}
 </script>
 
 <template>
@@ -13,11 +39,17 @@ const props = defineProps<{
       <el-aside width="200px">
         <div class="author">{{ props.comment.author }}</div>
         <div class="regDate">{{ props.comment.getDisplayRegDate() }}</div>
+        <el-input
+          type="password"
+          size="small"
+          v-model="props.comment.password"
+          placeholder="비밀번호"
+        />
       </el-aside>
       <el-main>{{ props.comment.content }}</el-main>
 
       <div class="delete">
-        <el-button size="small" type="danger" :icon="Delete" circle />
+        <el-button size="small" type="danger" :icon="Delete" @click="deleteComment()" circle />
       </div>
     </el-container>
   </div>
