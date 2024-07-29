@@ -145,4 +145,10 @@ Vue.js - The Progressive JavaScript Framework
 ### 배포
 - front 빌드 후 빌드 된 파일을 애플리케이션 밑 resources > static 옮김
 - ./gradlew build 명령어 실행 -x text 붙히면 테스트 실행 안함
-- 
+
+
+## 댓글 -> 테이블 모델링 (comment) (=Comment Entity)
+
+## 비공개, 공개 여부 (상태값)
+
+## 카테고리 -> DB(or Enum)

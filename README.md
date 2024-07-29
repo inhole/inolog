@@ -1,14 +1,40 @@
-# inolog
+# 이노로그 (개인블로그)
 
-## 댓글 -> 테이블 모델링 (comment) (=Comment Entity)
+### Project
 
-## 비공개, 공개 여부 (상태값)
+    Gradle Project
 
-## 카테고리 -> DB(or Enum)
+### Language
 
-## 로그인 -> spring security
+    Java 17
 
-## 비밀번호 암호화
+### SpringBoot
+
+    3.2.2
+
+### Dependencies :
+
+    Spring Boot Data Jpa
+
+    Spring Security
+
+    crypto: Scrypt 암호화
+
+    querydsl
+
+    Spring Restdocs : API 문서 작성
+
+    Lombok
+
+    H2 DataBase
+
+### 기능 정리 : 
+
+    로그인 및 게시글 권한 설정
+
+    게시글 조회, 작성, 수정, 삭제
+
+    댓글 조회, 작성, 삭제 ( 비밀번호 관리 )
 
 
 # Vue3 dependencies :
