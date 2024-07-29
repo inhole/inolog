@@ -7,6 +7,7 @@ import { container } from 'tsyringe'
 import CommentRepository from '@/repository/CommentRepository'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type HttpError from '@/http/HttpError'
+import { useRouter } from 'vue-router'
 
 export const useCommentStore = defineStore('comment', () => {
   const state = reactive({
@@ -14,13 +15,20 @@ export const useCommentStore = defineStore('comment', () => {
     commentWrite: new CommentWrite()
   })
 
+  const router = useRouter()
+
   const COMMENT_REPOSITORY = container.resolve(CommentRepository)
 
-  function write(postId: number) {
+  const write = (postId: number) => {
+    router.push(`/comment/write/${postId}`)
+  }
+
+  function writeComment(postId: number) {
     COMMENT_REPOSITORY.write(postId, state.commentWrite)
       .then(() => {
         ElMessage({ type: `success`, message: '댓글 작성이 완료되었습니다.' })
-        getList(postId)
+        // getList(postId)
+        router.back()
       })
       .catch((e: HttpError) => {
         ElMessage({ type: 'error', message: e.getMessage() })
@@ -29,7 +37,6 @@ export const useCommentStore = defineStore('comment', () => {
 
   function getList(postId: number, page = 1) {
     COMMENT_REPOSITORY.getList(postId, page).then((commentList) => {
-      console.log('>>>', postId, commentList)
       state.commentList = commentList
     })
   }
@@ -52,5 +59,5 @@ export const useCommentStore = defineStore('comment', () => {
     })
   }
 
-  return { state, write, getList, deleteComment }
+  return { state, write, writeComment, getList, deleteComment }
 })

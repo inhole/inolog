@@ -17,12 +17,14 @@ const store = useCommentStore()
       <el-aside width="200px">
         <div class="author">{{ props.comment.author }}</div>
         <div class="regDate">{{ props.comment.getDisplayRegDate() }}</div>
-        <el-input
-          type="password"
-          size="small"
-          v-model="props.comment.password"
-          placeholder="비밀번호"
-        />
+        <div class="password">
+          <el-input
+            type="password"
+            size="small"
+            v-model="props.comment.password"
+            placeholder="비밀번호"
+          />
+        </div>
       </el-aside>
       <el-main>{{ props.comment.content }}</el-main>
 
@@ -44,16 +46,6 @@ const store = useCommentStore()
   margin: 0.5rem;
   width: 100%;
 
-  .header {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .section {
-    display: flex;
-    flex-direction: column;
-  }
-
   .author {
     font-weight: 600;
     font-size: 1.2rem;
@@ -63,6 +55,11 @@ const store = useCommentStore()
     margin-top: 5px;
     color: #797979;
     font-size: 0.8rem;
+  }
+
+  .password {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
   }
 
   .content {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineProps, onMounted } from 'vue'
-import Comments from '@/components/Comments.vue'
+import Comments from '@/components/comment/Comments.vue'
 import { usePostStore } from '@/stores/post'
 
 // router 설정 > index.ts 에서 지정한 postId 가져오기

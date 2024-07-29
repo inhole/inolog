@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import WriteView from '../views/WriteView.vue'
-import ReadView from '../views/ReadView.vue'
-import EditView from '../views/EditView.vue'
-import LoginView from '../views/LoginView.vue'
+import HomeView from '../views/post/HomeView.vue'
+import WriteView from '../views/post/WriteView.vue'
+import ReadView from '../views/post/ReadView.vue'
+import EditView from '../views/post/EditView.vue'
+import LoginView from '../views/user/LoginView.vue'
+import CommentWrite from '@/views/comment/CommentWriteView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +34,12 @@ const router = createRouter({
       path: '/edit/:postId',
       name: 'edit',
       component: EditView,
+      props: true
+    },
+    {
+      path: '/comment/write/:postId',
+      name: 'commentWrite',
+      component: CommentWrite,
       props: true
     }
     // {
