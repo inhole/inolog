@@ -5,7 +5,7 @@ import { container } from 'tsyringe'
 import UserRepository from '@/repository/UserRepository'
 import ProfileRepository from '@/repository/ProfileRepository'
 
-export const useCounterStore = defineStore('counter', () => {
+export const useUserStore = defineStore('user', () => {
   // 유저 정보 프로필
   const state = reactive<UserProfile | any>({
     profile: null

@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import { defineProps, onMounted, reactive } from 'vue'
-import { container } from 'tsyringe'
-import PostRepository from '@/repository/PostRepository'
-import Post from '@/entity/post/Post'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { useRouter } from 'vue-router'
+import { defineProps, onMounted } from 'vue'
 import Comments from '@/components/Comments.vue'
+import { usePostStore } from '@/stores/post'
 
 // router 설정 > index.ts 에서 지정한 postId 가져오기
 const props = defineProps<{
@@ -13,62 +9,24 @@ const props = defineProps<{
 }>()
 const postId = Number(props.postId)
 
-const POST_REPOSITORY = container.resolve(PostRepository)
-
-// type StateType = {
-//   post: Post | null
-// }
-// const state = reactive<StateType>({
-const state = reactive({
-  post: new Post()
-})
-
-function getPost() {
-  POST_REPOSITORY.get(postId)
-    .then((post: Post) => {
-      state.post = post
-    })
-    .catch((e) => {
-      console.log(e)
-    })
-}
-
-const router = useRouter()
-
-function edit() {
-  router.push(`/edit/${postId}`)
-}
-
-function remove() {
-  ElMessageBox.confirm('정말로 삭제하시겠습니까?', 'warning', {
-    title: '삭제',
-    confirmButtonText: '삭제',
-    cancelButtonText: '취소',
-    type: 'warning'
-  }).then(() => {
-    POST_REPOSITORY.delete(postId).then(() => {
-      ElMessage({ type: 'success', message: '성공적으로 삭제되었습니다' })
-      router.back()
-    })
-  })
-}
+const store = usePostStore()
 
 onMounted(() => {
-  getPost()
+  store.getPost(postId)
 })
 </script>
 
 <template>
   <el-row>
     <el-col :spen="22" :offset="1">
-      <div class="title">{{ state.post.title }}</div>
+      <div class="title">{{ store.state.post.title }}</div>
     </el-col>
   </el-row>
 
   <el-row>
     <el-col :span="10" :offset="8">
       <div class="title">
-        <div class="regDate">Posted in {{ state.post.getDisplayRegDate() }}</div>
+        <div class="regDate">Posted in {{ store.state.post.getDisplayRegDate() }}</div>
       </div>
     </el-col>
   </el-row>
@@ -76,12 +34,12 @@ onMounted(() => {
   <el-row>
     <el-col>
       <div class="content">
-        {{ state.post.content }}
+        {{ store.state.post.content }}
       </div>
 
       <div class="footer">
-        <el-button type="primary" size="small" plain @click="edit()">수정</el-button>
-        <el-button type="danger" size="small" plain @click="remove()">삭제</el-button>
+        <el-button type="primary" size="small" plain @click="store.edit(postId)">수정</el-button>
+        <el-button type="danger" size="small" plain @click="store.remove(postId)">삭제</el-button>
       </div>
     </el-col>
   </el-row>

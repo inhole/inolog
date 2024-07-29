@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router'
 import type HttpError from '@/http/HttpError'
 import UserRepository from '@/repository/UserRepository'
 import { container } from 'tsyringe'
-import { useCounterStore } from '@/stores/counter'
+import { useUserStore } from '@/stores/user'
 
 const state = reactive({
   login: new Login()
@@ -14,7 +14,7 @@ const state = reactive({
 
 const router = useRouter()
 
-const store = useCounterStore()
+const store = useUserStore()
 
 const USER_REPOSITORY = container.resolve(UserRepository)
 

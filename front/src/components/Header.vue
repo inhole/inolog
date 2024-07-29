@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue'
-import { useCounterStore } from '@/stores/counter'
+import { useUserStore } from '@/stores/user'
 
-const store = useCounterStore()
+const store = useUserStore()
 
 onBeforeMount(() => {
   store.getProfile()
