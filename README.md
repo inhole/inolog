@@ -37,8 +37,8 @@
     댓글 조회, 작성, 삭제 ( 비밀번호 관리 )
 
 
-# Vue3 dependencies :
-````
+## Vue3 dependencies :
+
     "@js-joda/core": "^5.6.3", // 날짜 포맷
     "bootstrap": "^5.3.3",
     "class-transformer": "^0.5.1", // 파싱 관련
@@ -49,4 +49,3 @@
     "tsyringe": "^4.8.0", // DI 관련
     "vue": "^3.4.29",
     "vue-router": "^4.3.3"
-````
