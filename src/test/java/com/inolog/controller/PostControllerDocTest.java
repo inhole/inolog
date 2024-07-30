@@ -103,8 +103,8 @@ public class PostControllerDocTest {
                         .accept(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(document("post-inquiry",pathParameters(
-                        parameterWithName("postId").description("게시글 ID")
+                .andDo(document("post-inquiry", pathParameters(
+                                parameterWithName("postId").description("게시글 ID")
                         ),
                         responseFields(
                                 fieldWithPath("id").description("게시글 ID"),
@@ -209,7 +209,8 @@ public class PostControllerDocTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(document("post-delete", pathParameters(
+                .andDo(document("post-delete",
+                        pathParameters(
                                 parameterWithName("postId").description("게시글 ID")
                         )
                 ));
