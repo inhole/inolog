@@ -88,18 +88,21 @@ public class PostControllerDocTest {
     }
 
     @Test
+    @InologMockUser
     @DisplayName("글 단건 조회")
     void test2() throws Exception {
         //given
+        User user = userRepository.findAll().get(0);
+
         Post post = Post.builder()
                 .title("제목")
                 .content("내용")
+                .user(user)
                 .build();
-
         postRepository.save(post);
 
         // expected
-        this.mockMvc.perform(get("/posts/{postId}", 1L)
+        mockMvc.perform(get("/posts/{postId}", post.getId())
                         .accept(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -174,15 +177,20 @@ public class PostControllerDocTest {
         String json = objectMapper.writeValueAsString(postEdit);
 
         // expected
-        this.mockMvc.perform(patch("/posts/{postId}", 1L)
+        mockMvc.perform(patch("/posts/{postId}", post.getId())
                         .contentType(APPLICATION_JSON) // request 타입
                         .accept(APPLICATION_JSON) // response 타입
                         .content(json)
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(document("post-edit", pathParameters(
+                .andDo(document("post-edit",
+                        pathParameters(
                                 parameterWithName("postId").description("게시글 ID")
+                        ),
+                        requestFields(
+                                fieldWithPath("title").description("제목"),
+                                fieldWithPath("content").description("내용")
                         )
                 ));
     }
@@ -199,11 +207,10 @@ public class PostControllerDocTest {
                 .content("content")
                 .user(user)
                 .build();
-
         postRepository.save(post);
 
         // expected
-        this.mockMvc.perform(delete("/posts/{postId}", 1L)
+        mockMvc.perform(delete("/posts/{postId}", post.getId())
                         .contentType(APPLICATION_JSON) // request 타입
                         .accept(APPLICATION_JSON) // response 타입
                 )
