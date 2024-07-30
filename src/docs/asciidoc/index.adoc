@@ -7,54 +7,69 @@
 :sectlinks:
 
 == 글 작성
-
 === 요청
 include::{snippets}/post-create/http-request.adoc[]
 include::{snippets}/post-create/request-fields.adoc[]
-
-
 === 응답
 include::{snippets}/post-create/http-response.adoc[]
 
 
 == 글 단건조회
-
 === 요청
 include::{snippets}/post-inquiry/http-request.adoc[]
 include::{snippets}/post-inquiry/path-parameters.adoc[]
-
-
 === 응답
 include::{snippets}/post-inquiry/http-response.adoc[]
 include::{snippets}/post-inquiry/response-fields.adoc[]
 
 
 == 글 여러개 조회
-
 === 요청
 include::{snippets}/post-list/http-request.adoc[]
 include::{snippets}/post-list/query-parameters.adoc[]
-
 === 응답
 include::{snippets}/post-list/response-fields.adoc[]
 include::{snippets}/post-list/response-body.adoc[]
 
 
 == 글 수정
-
 === 요청
 include::{snippets}/post-edit/http-request.adoc[]
 include::{snippets}/post-edit/path-parameters.adoc[]
-
 === 응답
 include::{snippets}/post-edit/http-response.adoc[]
 
-== 글 삭제
 
+== 글 삭제
 === 요청
 include::{snippets}/post-delete/http-request.adoc[]
 include::{snippets}/post-delete/path-parameters.adoc[]
-
 === 응답
 include::{snippets}/post-delete/http-response.adoc[]
 
+
+== 댓글 작성
+=== 요청
+include::{snippets}/comment-create/http-request.adoc[]
+include::{snippets}/comment-create/path-parameters.adoc[]
+include::{snippets}/comment-create/request-fields.adoc[]
+=== 응답
+include::{snippets}/comment-create/http-response.adoc[]
+
+
+== 댓글 리스트 조회
+=== 요청
+include::{snippets}/comment-list/http-request.adoc[]
+include::{snippets}/comment-list/path-parameters.adoc[]
+include::{snippets}/comment-list/query-parameters.adoc[]
+=== 응답
+include::{snippets}/comment-list/response-fields.adoc[]
+include::{snippets}/comment-list/response-body.adoc[]
+
+== 댓글 삭제
+=== 요청
+include::{snippets}/comment-delete/http-request.adoc[]
+include::{snippets}/comment-delete/path-parameters.adoc[]
+include::{snippets}/comment-delete/request-fields.adoc[]
+=== 응답
+include::{snippets}/comment-delete/http-response.adoc[]
