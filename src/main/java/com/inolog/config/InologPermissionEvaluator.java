@@ -21,6 +21,14 @@ public class InologPermissionEvaluator implements PermissionEvaluator {
         return false;
     }
 
+    /**
+     * 사용자 권한을 검사
+     * @param authentication
+     * @param targetId
+     * @param targetType
+     * @param permission
+     * @return
+     */
     @Override
     public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();

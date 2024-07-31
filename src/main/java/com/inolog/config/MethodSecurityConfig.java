@@ -15,6 +15,10 @@ public class MethodSecurityConfig {
 
     private final PostRepository postRepository;
 
+    /**
+     * Spring Security 메서드 수준의 보안 핸들러 설정
+     * @return
+     */
     @Bean
     public MethodSecurityExpressionHandler methodSecurityExpressionHandler() {
         var handle = new DefaultMethodSecurityExpressionHandler();

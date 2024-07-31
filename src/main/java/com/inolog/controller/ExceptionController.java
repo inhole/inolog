@@ -1,7 +1,6 @@
 package com.inolog.controller;
 
 import com.inolog.exception.InologException;
-import com.inolog.exception.InvalidRequest;
 import com.inolog.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -93,4 +92,5 @@ public class ExceptionController {
 
         return response;
     }
+
 }
