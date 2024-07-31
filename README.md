@@ -46,3 +46,7 @@
 ## 🏀 ERD 설계도
 
 ![img.png](src/main/resources/static/img/img.png)
+
+
+## 💎 API 문서
+[index.html](src/main/resources/static/docs/index.html)
