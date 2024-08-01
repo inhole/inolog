@@ -1,9 +1,14 @@
 package com.inolog.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.inolog.annotation.InologMockUser;
+import com.inolog.domain.Category;
+import com.inolog.repository.category.CategoryRepository;
+import com.inolog.repository.post.PostRepository;
 import com.inolog.repository.user.UserRepository;
-import com.inolog.request.user.Signup;
-import com.inolog.util.JwtUtil;
+import com.inolog.request.category.CategoryCreate;
+import com.inolog.request.post.PostCreate;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,14 +17,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
 @SpringBootTest
-class AuthControllerTest {
+class CategoryControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -28,32 +35,34 @@ class AuthControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private UserRepository userRepository;
+    private CategoryRepository categoryRepository;
 
-    @Autowired
-    private JwtUtil jwtUtil;
 
     @BeforeEach
     public void clean() {
-        userRepository.deleteAll();
+        categoryRepository.deleteAll();
     }
 
+
     @Test
-    @DisplayName("회원가입")
-    void test3() throws Exception {
+    @InologMockUser
+    @DisplayName("카테고리 생성")
+    void test1() throws Exception {
         // given
-        Signup signup = Signup.builder()
-                .email("sylee74133@gmail.com")
-                .password("1234")
-                .name("이인호")
-                .build();
+        CategoryCreate categoryCreate = new CategoryCreate("SpringBoot");
+        String json = objectMapper.writeValueAsString(categoryCreate);
 
         // when
-        mockMvc.perform(post("/auth/signup")
-                        .content(objectMapper.writeValueAsString(signup))
-                        .contentType(APPLICATION_JSON) // application/json 주로 쓰임
+        mockMvc.perform(post("/category")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
+
+        // then
+        Category category = categoryRepository.findAll().get(0);
+        assertEquals(1L, categoryRepository.count());
+        assertEquals(category.getName(), "SpringBoot");
     }
 }

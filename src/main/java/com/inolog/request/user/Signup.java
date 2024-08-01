@@ -1,4 +1,4 @@
-package com.inolog.request;
+package com.inolog.request.user;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -5,7 +5,7 @@ import com.inolog.domain.PostEditor;
 import com.inolog.exception.PostNotFound;
 import com.inolog.exception.UserNotFound;
 import com.inolog.repository.post.PostRepository;
-import com.inolog.repository.UserRepository;
+import com.inolog.repository.user.UserRepository;
 import com.inolog.request.post.PostCreate;
 import com.inolog.request.post.PostEdit;
 import com.inolog.request.post.PostSearch;
@@ -16,10 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service

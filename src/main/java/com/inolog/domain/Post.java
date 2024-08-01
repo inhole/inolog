@@ -32,6 +32,9 @@ public class Post {
     @JoinColumn
     private User user;
 
+    @ManyToOne
+    private Category category;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     private List<Comment> comments;
 

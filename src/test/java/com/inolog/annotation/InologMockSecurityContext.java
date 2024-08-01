@@ -2,7 +2,7 @@ package com.inolog.annotation;
 
 import com.inolog.config.UserPrincipal;
 import com.inolog.domain.User;
-import com.inolog.repository.UserRepository;
+import com.inolog.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

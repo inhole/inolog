@@ -5,7 +5,7 @@ import com.inolog.annotation.InologMockUser;
 import com.inolog.domain.Post;
 import com.inolog.domain.User;
 import com.inolog.repository.post.PostRepository;
-import com.inolog.repository.UserRepository;
+import com.inolog.repository.user.UserRepository;
 import com.inolog.request.post.PostCreate;
 import com.inolog.request.post.PostEdit;
 import org.junit.jupiter.api.AfterEach;
@@ -17,8 +17,6 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.payload.FieldDescriptor;
-import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;

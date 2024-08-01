@@ -1,7 +1,6 @@
 package com.inolog.controller;
 
 import com.inolog.config.UserPrincipal;
-import com.inolog.repository.UserRepository;
 import com.inolog.response.UserResponse;
 import com.inolog.service.UserService;
 import lombok.RequiredArgsConstructor;

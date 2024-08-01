@@ -2,8 +2,8 @@ package com.inolog.service;
 
 import com.inolog.domain.User;
 import com.inolog.exception.AlreadyExistsEmailException;
-import com.inolog.repository.UserRepository;
-import com.inolog.request.Signup;
+import com.inolog.repository.user.UserRepository;
+import com.inolog.request.user.Signup;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;

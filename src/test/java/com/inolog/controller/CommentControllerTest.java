@@ -1,19 +1,15 @@
 package com.inolog.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.inolog.annotation.InologMockUser;
 import com.inolog.domain.Comment;
 import com.inolog.domain.Post;
 import com.inolog.domain.User;
-import com.inolog.repository.UserRepository;
+import com.inolog.repository.user.UserRepository;
 import com.inolog.repository.comment.CommentRepository;
 import com.inolog.repository.post.PostRepository;
 import com.inolog.request.comment.CommentCreate;
 import com.inolog.request.comment.CommentDelete;
-import com.inolog.request.post.PostCreate;
-import com.inolog.request.post.PostEdit;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +25,6 @@ import java.util.stream.IntStream;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

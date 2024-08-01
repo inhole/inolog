@@ -5,7 +5,7 @@ import com.inolog.annotation.InologMockUser;
 import com.inolog.domain.Post;
 import com.inolog.domain.User;
 import com.inolog.repository.post.PostRepository;
-import com.inolog.repository.UserRepository;
+import com.inolog.repository.user.UserRepository;
 import com.inolog.request.post.PostCreate;
 import com.inolog.request.post.PostEdit;
 import org.junit.jupiter.api.*;
@@ -59,7 +59,7 @@ class PostControllerTest {
 
         String json = objectMapper.writeValueAsString(request);
 
-        // when
+        // expected
         mockMvc.perform(post("/posts")
                         .contentType(APPLICATION_JSON) // application/json 주로 쓰임
                         .content(json)

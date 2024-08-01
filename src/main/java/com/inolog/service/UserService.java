@@ -2,7 +2,7 @@ package com.inolog.service;
 
 import com.inolog.domain.User;
 import com.inolog.exception.UserNotFound;
-import com.inolog.repository.UserRepository;
+import com.inolog.repository.user.UserRepository;
 import com.inolog.response.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

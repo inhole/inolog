@@ -2,8 +2,8 @@ package com.inolog.service;
 
 import com.inolog.domain.User;
 import com.inolog.exception.AlreadyExistsEmailException;
-import com.inolog.repository.UserRepository;
-import com.inolog.request.Signup;
+import com.inolog.repository.user.UserRepository;
+import com.inolog.request.user.Signup;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

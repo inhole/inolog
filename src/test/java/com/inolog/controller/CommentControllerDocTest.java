@@ -5,13 +5,11 @@ import com.inolog.annotation.InologMockUser;
 import com.inolog.domain.Comment;
 import com.inolog.domain.Post;
 import com.inolog.domain.User;
-import com.inolog.repository.UserRepository;
+import com.inolog.repository.user.UserRepository;
 import com.inolog.repository.comment.CommentRepository;
 import com.inolog.repository.post.PostRepository;
 import com.inolog.request.comment.CommentCreate;
 import com.inolog.request.comment.CommentDelete;
-import com.inolog.request.post.PostCreate;
-import com.inolog.request.post.PostEdit;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
