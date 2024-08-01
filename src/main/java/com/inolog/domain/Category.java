@@ -1,5 +1,6 @@
 package com.inolog.domain;
 
+import com.inolog.request.category.CategoryEdit;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,5 +27,9 @@ public class Category {
     public Category(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public void edit(CategoryEdit categoryEdit) {
+        this.name = categoryEdit.getName();
     }
 }
