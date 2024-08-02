@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCommentStore } from '@/stores/comment'
+import { useCommentStore } from '@/stores/Comment'
 
 const props = defineProps<{
   postId: number | String

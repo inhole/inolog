@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CommentComponent from '@/components/comment/CommentComponent.vue'
 import { onMounted } from 'vue'
-import { useCommentStore } from '@/stores/comment'
+import { useCommentStore } from '@/stores/Comment'
 
 const props = defineProps<{
   postId: number

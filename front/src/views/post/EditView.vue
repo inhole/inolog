@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineProps, onMounted } from 'vue'
-import { usePostStore } from '@/stores/post'
+import { usePostStore } from '@/stores/Post'
 
 const props = defineProps<{
   postId: number

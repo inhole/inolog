@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import PostComponent from '@/components/post/PostComponent.vue'
-import { usePostStore } from '@/stores/post'
+import { usePostStore } from '@/stores/Post'
 
 const store = usePostStore()
 

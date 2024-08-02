@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePostStore } from '@/stores/post'
+import { usePostStore } from '@/stores/Post'
 
 const store = usePostStore()
 </script>

@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router'
 import type HttpError from '@/http/HttpError'
 import UserRepository from '@/repository/UserRepository'
 import { container } from 'tsyringe'
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/User'
 
 const state = reactive({
   login: new Login()

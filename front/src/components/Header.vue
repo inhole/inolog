@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue'
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/User'
 
 const store = useUserStore()
 
@@ -16,6 +16,7 @@ onBeforeMount(() => {
       <div class="menu">
         <router-link to="/">글 목록</router-link>
         <router-link v-if="store.state.profile !== null" to="/write">글 작성</router-link>
+        <router-link v-if="store.state.profile !== null" to="/category">카테고리</router-link>
         <router-link v-if="store.state.profile == null" to="/login">로그인</router-link>
         <a href="#" v-else @click="store.logout()">({{ store.state.profile.name }}) 로그아웃</a>
       </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Delete } from '@element-plus/icons-vue'
 import Comment from '@/entity/comment/Comment'
-import { useCommentStore } from '@/stores/comment'
+import { useCommentStore } from '@/stores/Comment'
 
 const props = defineProps<{
   comment: Comment

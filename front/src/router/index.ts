@@ -5,6 +5,7 @@ import ReadView from '../views/post/ReadView.vue'
 import EditView from '../views/post/EditView.vue'
 import LoginView from '../views/user/LoginView.vue'
 import CommentWrite from '@/views/comment/CommentWriteView.vue'
+import CategoryView from '@/views/category/CategoryView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,6 +42,11 @@ const router = createRouter({
       name: 'commentWrite',
       component: CommentWrite,
       props: true
+    },
+    {
+      path: '/category',
+      name: 'category',
+      component: CategoryView
     }
     // {
     //   path: '/about',
