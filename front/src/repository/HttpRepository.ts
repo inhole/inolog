@@ -4,6 +4,8 @@ import { Axios } from 'axios'
 import { plainToInstance } from 'class-transformer'
 import Null from '@/entity/data/Null'
 import Paging from '@/entity/data/Paging'
+import { types } from 'sass'
+import List = types.List
 
 /**
  * 공통 axios HTTP 요청
@@ -30,6 +32,15 @@ export default class HttpRepository {
       paging.setItems(items)
       return paging
     })
+  }
+
+  public getBaseList<T>(
+    config: HttpRequestConfig,
+    clazz: new (...args: any[]) => T
+  ): Promise<T[] | any> {
+    return this.httpClient
+      .request({ ...config, method: 'GET' })
+      .then((response) => plainToInstance<T, any[]>(clazz, response))
   }
 
   // post 설정 옵션과 class 를 받음 class 는 초기값 null로 없으면 빈 Null class return

@@ -13,6 +13,7 @@ public class PostResponse {
     private final Long id;
     private final String title;
     private final String content;
+    private final String categoryName;
     private final LocalDateTime regDate;
 
     /**
@@ -22,6 +23,7 @@ public class PostResponse {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
+        this.categoryName = post.getCategory().getName();
         this.regDate = post.getRegDate();
     }
 }

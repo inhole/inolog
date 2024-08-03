@@ -33,16 +33,18 @@ public class Post {
     private User user;
 
     @ManyToOne
+    @JoinColumn
     private Category category;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     private List<Comment> comments;
 
     @Builder
-    public Post(String title, String content, User user) {
+    public Post(String title, String content, User user, Category category) {
         this.title = title;
         this.content = content;
         this.user = user;
+        this.category = category;
         this.regDate = LocalDateTime.now();
     }
 

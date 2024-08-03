@@ -1,19 +1,18 @@
 import { defineStore } from 'pinia'
 import { reactive } from 'vue'
-import Paging from '@/entity/data/Paging'
 import Comment from '@/entity/comment/Comment'
-import CommentWrite from '@/entity/comment/CommentWrite'
 import { container } from 'tsyringe'
-import CommentRepository from '@/repository/CommentRepository'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type HttpError from '@/http/HttpError'
 import { useRouter } from 'vue-router'
 import CategoryRepository from '@/repository/CategoryRepository'
 import Category from '@/entity/category/Category'
+import CategoryWrite from '@/entity/category/CategoryWrite'
 
-export const useCategoryStore = defineStore('comment', () => {
+export const useCategoryStore = defineStore('category', () => {
   const state = reactive({
-    category: new Category()
+    categoryList: new Array<Category>(),
+    categoryWrite: new CategoryWrite()
   })
 
   const router = useRouter()
@@ -21,19 +20,39 @@ export const useCategoryStore = defineStore('comment', () => {
   const CATEGORY_REPOSITORY = container.resolve(CategoryRepository)
 
   function write() {
-    CATEGORY_REPOSITORY.write(state.category)
+    CATEGORY_REPOSITORY.write(state.categoryWrite)
       .then(() => {
         ElMessage({ type: `success`, message: '카테고리 작성이 완료되었습니다.' })
-        router.back()
+        getList()
       })
       .catch((e: HttpError) => {
         ElMessage({ type: 'error', message: e.getMessage() })
       })
   }
 
-  function getList(postId: number, page = 1) {}
+  function getList() {
+    CATEGORY_REPOSITORY.getBaseList().then((response) => {
+      state.categoryList = response
+    })
+  }
 
-  function deleteComment(comment: Comment, postId: number) {}
+  function deleteCategory(categoryId: number) {
+    ElMessageBox.confirm('정말로 삭제하시겠습니까?', 'warning', {
+      title: '삭제',
+      confirmButtonText: '삭제',
+      cancelButtonText: '취소',
+      type: 'warning'
+    }).then(() => {
+      CATEGORY_REPOSITORY.delete(categoryId)
+        .then(() => {
+          ElMessage({ type: `success`, message: '삭제가 완료되었습니다.' })
+          getList()
+        })
+        .catch((e: HttpError) => {
+          ElMessage({ type: 'error', message: e.getMessage() })
+        })
+    })
+  }
 
-  return { state, write, getList, deleteComment }
+  return { state, write, getList, deleteCategory }
 })

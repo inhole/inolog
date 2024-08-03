@@ -3,6 +3,7 @@ package com.inolog.controller;
 import com.inolog.domain.Category;
 import com.inolog.request.category.CategoryCreate;
 import com.inolog.request.category.CategoryEdit;
+import com.inolog.response.CategoryResponse;
 import com.inolog.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class CategoryController {
      * @return
      */
     @GetMapping("/category")
-    public List<Category> getList() {
+    public List<CategoryResponse> getList() {
         return categoryService.getList();
     }
 

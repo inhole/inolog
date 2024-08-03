@@ -1,9 +1,7 @@
 import { inject, singleton } from 'tsyringe'
 import HttpRepository from '@/repository/HttpRepository'
-import type CommentWrite from '@/entity/comment/CommentWrite'
-import Comment from '@/entity/comment/Comment'
 import type CommentDelete from '@/entity/comment/CommentDelete'
-import type Category from '@/entity/category/Category'
+import Category from '@/entity/category/Category'
 
 @singleton()
 export default class CategoryRepository {
@@ -16,19 +14,18 @@ export default class CategoryRepository {
     })
   }
 
-  public getList(postId: number, page: Number) {
-    return this.httpRepository.getList<Comment>(
+  public getBaseList() {
+    return this.httpRepository.getBaseList<Category>(
       {
-        path: `/api/posts/${postId}/comments?page=${page}&size=3`
+        path: `/api/category`
       },
-      Comment
+      Category
     )
   }
 
-  public delete(request: CommentDelete) {
-    return this.httpRepository.post({
-      path: `/api/comments/${request.id}/delete`,
-      body: request
+  public delete(categoryId: number) {
+    return this.httpRepository.delete({
+      path: `/api/category/${categoryId}`
     })
   }
 }

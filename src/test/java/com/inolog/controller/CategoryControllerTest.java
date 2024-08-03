@@ -14,6 +14,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -57,7 +61,7 @@ class CategoryControllerTest {
                 .andDo(print());
 
         // then
-        Category category = categoryRepository.findAll().get(0);
+        Category category = categoryRepository.getList().get(0);
         assertEquals(1L, categoryRepository.count());
         assertEquals(category.getName(), "SpringBoot");
     }
@@ -67,21 +71,24 @@ class CategoryControllerTest {
     @DisplayName("카테고리 조회")
     void test2() throws Exception {
         // given
-        CategoryCreate categoryCreate = new CategoryCreate("SpringBoot");
-        String json = objectMapper.writeValueAsString(categoryCreate);
+        List<Category> requestCategories = IntStream.range(1, 6)
+                .mapToObj(i -> Category.builder()
+                        .name("Java" + i)
+                        .build())
+                .collect(Collectors.toList());
+        categoryRepository.saveAll(requestCategories);
 
         // when
-        mockMvc.perform(post("/category")
+        mockMvc.perform(get("/category")
                         .contentType(APPLICATION_JSON)
-                        .content(json)
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
 
         // then
-        Category category = categoryRepository.findAll().get(0);
-        assertEquals(1L, categoryRepository.count());
-        assertEquals(category.getName(), "SpringBoot");
+        Category category = categoryRepository.getList().get(0);
+        assertEquals(5L, categoryRepository.count());
+        assertEquals(category.getName(), "Java5");
     }
 
     @Test
@@ -106,7 +113,7 @@ class CategoryControllerTest {
                 .andDo(print());
 
         // then
-        Category category = categoryRepository.findAll().get(0);
+        Category category = categoryRepository.getList().get(0);
         assertEquals(1L, categoryRepository.count());
         assertEquals(category.getName(), "Java17");
     }

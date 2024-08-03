@@ -5,6 +5,7 @@ import com.inolog.domain.Category;
 import com.inolog.repository.category.CategoryRepository;
 import com.inolog.request.category.CategoryCreate;
 import com.inolog.request.category.CategoryEdit;
+import com.inolog.response.CategoryResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,7 +44,7 @@ class CategoryServiceTest {
 
         // then
         assertEquals(1L, categoryRepository.count());
-        Category category = categoryRepository.findAll().get(0);
+        Category category = categoryRepository.getList().get(0);
         assertEquals("SpringBoot", category.getName());
     }
 
@@ -60,7 +61,7 @@ class CategoryServiceTest {
         categoryRepository.saveAll(requestCategories);
 
         // when
-        List<Category> categoryList = categoryService.getList();
+        List<CategoryResponse> categoryList = categoryService.getList();
 
         // then
         assertEquals(5L, categoryRepository.count());
@@ -83,7 +84,7 @@ class CategoryServiceTest {
         categoryService.edit(requestCategory.getId(), categoryEdit);
 
         // then
-        Category category = categoryRepository.findAll().get(0);
+        Category category = categoryRepository.getList().get(0);
         assertEquals("Java17", category.getName());
     }
 

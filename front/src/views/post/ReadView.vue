@@ -26,7 +26,10 @@ onMounted(() => {
   <el-row>
     <el-col :span="10" :offset="8">
       <div class="title">
-        <div class="regDate">Posted in {{ store.state.post.getDisplayRegDate() }}</div>
+        <div class="sub">
+          <span class="category">{{ store.state.post.categoryName }}</span>
+          <span class="regDate">Posted in {{ store.state.post.getDisplayRegDate() }}</span>
+        </div>
       </div>
     </el-col>
   </el-row>
@@ -58,11 +61,18 @@ onMounted(() => {
   text-align: center;
 }
 
-.regDate {
+.sub {
   margin-top: 0.5rem;
   margin-bottom: 1rem;
-  font-size: 0.73rem;
   font-weight: 300;
+  .category {
+    margin-right: 0.8rem;
+    font-size: 0.8rem;
+    font-family: Georgia, serif;
+  }
+  .regDate {
+    font-size: 0.73rem;
+  }
 }
 
 .content {

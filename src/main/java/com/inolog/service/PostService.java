@@ -29,10 +29,12 @@ public class PostService {
         var user = userRepository.findById(userId)
                 .orElseThrow(UserNotFound::new);
 
+        // TODO :: category 들어오는지 확인......
         Post post = Post.builder()
                 .user(user)
                 .title(postCreate.getTitle())
                 .content(postCreate.getContent())
+                .category(postCreate.getCategory())
                 .build();
 
         postRepository.save(post);

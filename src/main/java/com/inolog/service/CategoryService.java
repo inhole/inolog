@@ -5,11 +5,14 @@ import com.inolog.exception.CategoryNotFound;
 import com.inolog.repository.category.CategoryRepository;
 import com.inolog.request.category.CategoryCreate;
 import com.inolog.request.category.CategoryEdit;
+import com.inolog.response.CategoryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +27,11 @@ public class CategoryService {
         categoryRepository.save(category);
     }
 
-    public List<Category> getList() {
-        return categoryRepository.findAll();
+    public List<CategoryResponse> getList() {
+        List<Category> categoryList = categoryRepository.getList();
+        return categoryList.stream()
+                .map(CategoryResponse::new)
+                .collect(Collectors.toList());
     }
 
     @Transactional
