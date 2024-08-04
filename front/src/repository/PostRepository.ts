@@ -2,6 +2,7 @@ import HttpRepository from '@/repository/HttpRepository'
 import { inject, singleton } from 'tsyringe'
 import type PostWrite from '@/entity/post/PostWrite'
 import Post from '@/entity/post/Post'
+import type { UnwrapRef } from 'vue'
 
 @singleton()
 export default class PostRepository {
@@ -18,10 +19,10 @@ export default class PostRepository {
     return this.httpRepository.get<Post>({ path: `/api/posts/${postId}` }, Post)
   }
 
-  public getList(page: Number) {
+  public getList(page: Number, categoryId: Number) {
     return this.httpRepository.getList<Post>(
       {
-        path: `/api/posts?page=${page}&size=3`
+        path: `/api/posts?page=${page}&size=3&categoryId=${categoryId}`
       },
       Post
     )

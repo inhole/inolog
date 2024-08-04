@@ -10,29 +10,25 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="affix-container">
-    <el-affix target=".affix-container" :offset="70" style="height: 100px">
-      <div class="title">이노로그</div>
-      <div class="menu">
-        <router-link to="/">글 목록</router-link>
-        <router-link v-if="store.state.profile !== null" to="/write">글 작성</router-link>
-        <router-link v-if="store.state.profile !== null" to="/category">카테고리</router-link>
-        <router-link v-if="store.state.profile == null" to="/login">로그인</router-link>
-        <a href="#" v-else @click="store.logout()">({{ store.state.profile.name }}) 로그아웃</a>
-      </div>
-    </el-affix>
+  <div class="header-container">
+    <div class="title">이노로그</div>
+    <div class="menu">
+      <router-link to="/">글 목록</router-link>
+      <router-link v-if="store.state.profile !== null" to="/write">글 작성</router-link>
+      <router-link v-if="store.state.profile !== null" to="/category">카테고리</router-link>
+      <router-link v-if="store.state.profile == null" to="/login">로그인</router-link>
+      <a href="#" v-else @click="store.logout()">({{ store.state.profile.name }}) 로그아웃</a>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-.affix-container {
+.header-container {
   text-align: center;
-  //height: 200px;
-  border-radius: 4px;
-  //background: var(--el-color-primary-light-9);
+  z-index: inherit;
 
   .title {
-    margin-top: 1.5rem;
+    margin-top: 1.3rem;
     margin-bottom: 0.4rem;
     font-size: 2rem;
   }

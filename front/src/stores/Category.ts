@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { reactive } from 'vue'
-import Comment from '@/entity/comment/Comment'
 import { container } from 'tsyringe'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type HttpError from '@/http/HttpError'

@@ -28,10 +28,20 @@ export const usePostStore = defineStore('post', () => {
   const POST_REPOSITORY = container.resolve(PostRepository)
 
   // 글 리스트 조회
-  function getList(page = 1) {
-    POST_REPOSITORY.getList(page).then((postList) => {
+  function getList(page = 1, categoryId = 0) {
+    POST_REPOSITORY.getList(page, categoryId).then((postList) => {
       state.postList = postList
     })
+  }
+
+  function getAside(categoryId?: number) {
+    router.push(`/`)
+    if (categoryId) {
+      getList(1, categoryId)
+    } else {
+      getList()
+    }
+    // getList(1, categoryId)
   }
 
   // 글 상세, 수정 조회
@@ -89,5 +99,5 @@ export const usePostStore = defineStore('post', () => {
       })
   }
 
-  return { state, getList, getPost, write, edit, remove, editPost }
+  return { state, getAside, getList, getPost, write, edit, remove, editPost }
 })
