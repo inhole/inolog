@@ -1,10 +1,19 @@
 <script setup lang="ts">
 import { usePostStore } from '@/stores/Post'
 import { useCategoryStore } from '@/stores/Category'
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 
 const postStore = usePostStore()
 const categoryStore = useCategoryStore()
+
+const categoryId = computed({
+  get() {
+    return postStore.state.postWrite.category.id === 0 ? '' : postStore.state.postWrite.category.id
+  },
+  set(value) {
+    postStore.state.postWrite.category.id = value === '' ? 0 : value
+  }
+})
 
 onMounted(() => {
   categoryStore.getList()
@@ -23,7 +32,7 @@ onMounted(() => {
     </el-form-item>
 
     <el-form-item label="카테고리">
-      <el-select v-model="postStore.state.postWrite.category.id" placeholder="선택">
+      <el-select v-model="categoryId" placeholder="선택" size="large">
         <el-option
           v-for="category in categoryStore.state.categoryList"
           :key="category.id"

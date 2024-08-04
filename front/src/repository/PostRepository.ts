@@ -2,7 +2,6 @@ import HttpRepository from '@/repository/HttpRepository'
 import { inject, singleton } from 'tsyringe'
 import type PostWrite from '@/entity/post/PostWrite'
 import Post from '@/entity/post/Post'
-import type { UnwrapRef } from 'vue'
 
 @singleton()
 export default class PostRepository {

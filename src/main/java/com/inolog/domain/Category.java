@@ -2,6 +2,7 @@ package com.inolog.domain;
 
 import com.inolog.request.category.CategoryEdit;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

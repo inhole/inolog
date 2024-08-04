@@ -2,6 +2,7 @@ package com.inolog.service;
 
 import com.inolog.domain.Post;
 import com.inolog.domain.PostEditor;
+import com.inolog.exception.CategoryNotFound;
 import com.inolog.exception.PostNotFound;
 import com.inolog.exception.UserNotFound;
 import com.inolog.repository.post.PostRepository;
@@ -29,7 +30,10 @@ public class PostService {
         var user = userRepository.findById(userId)
                 .orElseThrow(UserNotFound::new);
 
-        // TODO :: category 들어오는지 확인......
+        if (postCreate.getCategory().getId() == null || postCreate.getCategory().getId() == 0) {
+            throw new CategoryNotFound();
+        }
+
         Post post = Post.builder()
                 .user(user)
                 .title(postCreate.getTitle())
