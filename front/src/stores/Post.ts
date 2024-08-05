@@ -8,8 +8,6 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router'
 import type HttpError from '@/http/HttpError'
 import PostWrite from '@/entity/post/PostWrite'
-import Category from '@/entity/category/Category'
-import CategoryRepository from '@/repository/CategoryRepository'
 
 export const usePostStore = defineStore('post', () => {
   // 상태 관리
