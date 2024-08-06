@@ -12,7 +12,6 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 
 import java.io.IOException;
 
-import static jakarta.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;

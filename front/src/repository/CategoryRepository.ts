@@ -1,6 +1,5 @@
 import { inject, singleton } from 'tsyringe'
 import HttpRepository from '@/repository/HttpRepository'
-import type CommentDelete from '@/entity/comment/CommentDelete'
 import Category from '@/entity/category/Category'
 
 @singleton()

@@ -24,7 +24,7 @@ public class UserController {
     @GetMapping("/users/me")
     public ResponseEntity<UserResponse> getMe(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         if (userPrincipal == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.ok().build();
         }
         UserResponse userResponse = userService.getUserProfile(userPrincipal.getUserId());
         return ResponseEntity.ok().body(userResponse);

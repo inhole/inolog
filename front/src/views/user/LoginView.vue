@@ -46,6 +46,17 @@ function doLogin() {
         <el-form-item>
           <el-button type="primary" style="width: 100%" @click="doLogin()">로그인</el-button>
         </el-form-item>
+
+        <el-form-item>
+          <el-button type="warning"
+            ><a href="/api/oauth2/authorization/github">github 로그인</a></el-button
+          >
+        </el-form-item>
+        <el-form-item>
+          <el-button type="info"
+            ><a href="/api/oauth2/authorization/google">google 로그인</a></el-button
+          >
+        </el-form-item>
       </el-form>
     </el-col>
   </el-row>

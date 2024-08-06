@@ -28,6 +28,16 @@ spring:
     init:
       mode: always
 
+  # oauth2 설정
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: Ov23li38kZEoCpkkwCqQ
+            client-secret: 681f65bfd36601b8f77a886cb2bd679044dbe745
+            redirect-uri: http://localhost:5173/api/login/oauth2/code/github
+
 inolog:
   jwt-key: 3l3Cw10+O7gzomDsD4c7F1D7v3r3LBJ8MvMx8DJnQKE=
 
