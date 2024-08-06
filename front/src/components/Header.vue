@@ -11,7 +11,7 @@ onBeforeMount(() => {
 
 <template>
   <div class="header-container">
-    <div class="title">이노로그</div>
+    <div class="title">🎈이노로그</div>
     <div class="menu">
       <router-link to="/">글 목록</router-link>
       <router-link v-if="store.state.profile !== null" to="/write">글 작성</router-link>
@@ -25,7 +25,6 @@ onBeforeMount(() => {
 <style scoped lang="scss">
 .header-container {
   text-align: center;
-  z-index: inherit;
 
   .title {
     margin-top: 1.3rem;

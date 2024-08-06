@@ -2,6 +2,7 @@
 import { defineProps, onMounted } from 'vue'
 import Comments from '@/components/comment/Comments.vue'
 import { usePostStore } from '@/stores/Post'
+import { useUserStore } from '@/stores/User'
 
 // router 설정 > index.ts 에서 지정한 postId 가져오기
 const props = defineProps<{
@@ -9,17 +10,18 @@ const props = defineProps<{
 }>()
 const postId = Number(props.postId)
 
-const store = usePostStore()
+const postStore = usePostStore()
+const userStore = useUserStore()
 
 onMounted(() => {
-  store.getPost(postId)
+  postStore.getPost(postId)
 })
 </script>
 
 <template>
   <el-row>
     <el-col :spen="22" :offset="1">
-      <div class="title">{{ store.state.post.title }}</div>
+      <div class="title">{{ postStore.state.post.title }}</div>
     </el-col>
   </el-row>
 
@@ -27,8 +29,8 @@ onMounted(() => {
     <el-col :span="10" :offset="8">
       <div class="title">
         <div class="sub">
-          <span class="category">{{ store.state.post.categoryName }}</span>
-          <span class="regDate">Posted in {{ store.state.post.getDisplayRegDate() }}</span>
+          <span class="category">{{ postStore.state.post.categoryName }}</span>
+          <span class="regDate">Posted in {{ postStore.state.post.getDisplayRegDate() }}</span>
         </div>
       </div>
     </el-col>
@@ -37,12 +39,16 @@ onMounted(() => {
   <el-row>
     <el-col>
       <div class="content">
-        {{ store.state.post.content }}
+        {{ postStore.state.post.content }}
       </div>
 
-      <div class="footer">
-        <el-button type="primary" size="small" plain @click="store.edit(postId)">수정</el-button>
-        <el-button type="danger" size="small" plain @click="store.remove(postId)">삭제</el-button>
+      <div class="footer" v-if="userStore.state.profile != null">
+        <el-button type="primary" size="small" plain @click="postStore.edit(postId)"
+          >수정</el-button
+        >
+        <el-button type="danger" size="small" plain @click="postStore.remove(postId)"
+          >삭제</el-button
+        >
       </div>
     </el-col>
   </el-row>

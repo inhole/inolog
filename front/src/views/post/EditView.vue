@@ -3,7 +3,7 @@ import { defineProps, onMounted } from 'vue'
 import { usePostStore } from '@/stores/Post'
 
 const props = defineProps<{
-  postId: number
+  postId: number | any
 }>()
 
 const store = usePostStore()

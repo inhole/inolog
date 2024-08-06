@@ -1,9 +1,10 @@
-import { computed, reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import { defineStore } from 'pinia'
-import type UserProfile from '@/entity/user/UserProfile'
+import UserProfile from '@/entity/user/UserProfile'
 import { container } from 'tsyringe'
 import UserRepository from '@/repository/UserRepository'
 import ProfileRepository from '@/repository/ProfileRepository'
+import { instanceToPlain, plainToInstance } from 'class-transformer'
 
 export const useUserStore = defineStore('user', () => {
   // 유저 정보 프로필
@@ -16,6 +17,10 @@ export const useUserStore = defineStore('user', () => {
 
   function getProfile() {
     USER_REPOSITORY.getProfile().then((profile) => {
+      const json = JSON.stringify(instanceToPlain(profile))
+      if (json === null || json === '""') {
+        return
+      }
       PROFILE_REPOSITORY.setProfile(profile)
       state.profile = profile
     })
