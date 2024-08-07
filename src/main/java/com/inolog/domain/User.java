@@ -26,6 +26,8 @@ public class User {
 
     private String password;
 
+    private UserRole role;
+
     private LocalDateTime createdAt;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
