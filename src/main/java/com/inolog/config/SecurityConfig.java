@@ -5,7 +5,6 @@ import com.inolog.config.filter.EmailPasswordAuthFilter;
 import com.inolog.config.handler.*;
 import com.inolog.domain.User;
 import com.inolog.repository.user.UserRepository;
-import com.inolog.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -36,7 +35,6 @@ public class SecurityConfig {
 
     private final ObjectMapper objectMapper;
     private final UserRepository userRepository;
-    private final CustomOAuth2UserService oAuth2UserService;
 
     /**
      * 스프링 시큐리티 기능 비활성화
@@ -88,10 +86,6 @@ public class SecurityConfig {
                         .alwaysRemember(false)
                         .tokenValiditySeconds(2592000) // 만료일 한달
                 )
-                .oauth2Login(oauth ->
-                        // OAuth2 로그인 성공 이후 사용자 정보를 가져올 때의 설정을 담당
-                        oauth.userInfoEndpoint(c -> c.userService(oAuth2UserService))
-                        )
                 .csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
