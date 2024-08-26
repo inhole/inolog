@@ -1,6 +1,23 @@
 # JPA log
 logging:
   level:
-    sql: info
+    sql: debug
     type: trace
 
+spring:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  datasource:
+    # NON_KEYWORDS=USER > user 테이블 사용을 위해 추가
+    url: jdbc:h2:mem:inolog;NON_KEYWORDS=USER
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  sql:
+    init:
+      mode: never

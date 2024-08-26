@@ -1,5 +1,6 @@
 package com.inolog.annotation;
 
+import com.inolog.domain.UserRole;
 import org.springframework.security.test.context.support.WithSecurityContext;
 
 import java.lang.annotation.Retention;
@@ -15,5 +16,5 @@ public @interface InologMockUser {
 
     String password() default "";
 
-//    String role() default "ROLE_ADMIN";
+    UserRole role() default UserRole.ADMIN;
 }

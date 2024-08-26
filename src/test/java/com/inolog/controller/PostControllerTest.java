@@ -239,4 +239,31 @@ class PostControllerTest {
                 .andDo(print());
     }
 
+    @Test
+    @InologMockUser
+    @DisplayName("게시글 좋아요")
+    void test11() throws Exception {
+        // given
+        User user = userRepository.findAll().get(0);
+
+        Post post = Post.builder()
+                .title("호돌맨")
+                .content("반포자이")
+                .user(user)
+                .build();
+
+        postRepository.save(post);
+
+        // when
+        mockMvc.perform(patch("/posts/{postId}/like", post.getId())
+                        .contentType(APPLICATION_JSON)
+                        )
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        // then
+        Post post2 = postRepository.findAll().get(0);
+        Assertions.assertEquals(post2.getLikes(), 1L);
+    }
+
 }

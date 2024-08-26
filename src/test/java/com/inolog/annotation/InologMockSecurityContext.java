@@ -23,17 +23,18 @@ public class InologMockSecurityContext implements WithSecurityContextFactory<Ino
                 .email(annotation.email())
                 .name(annotation.name())
                 .password(annotation.password())
+                .role(annotation.role())
                 .build();
 
         userRepository.save(user);
 
         var principal = new UserPrincipal(user);
 
-        var role = new SimpleGrantedAuthority("ROLE_ADMIN");
+//        var role = new SimpleGrantedAuthority("ROLE_ADMIN");
         var authenticationToken = new UsernamePasswordAuthenticationToken(
                 principal,
                 user.getPassword(),
-                List.of(role)
+                List.of(new SimpleGrantedAuthority(user.getRole().getValue()))
         );
 
         var context = SecurityContextHolder.createEmptyContext();

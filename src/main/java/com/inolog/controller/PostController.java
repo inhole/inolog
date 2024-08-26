@@ -74,4 +74,13 @@ public class PostController {
     public void delete(@PathVariable Long postId) {
         postService.delete(postId);
     }
+
+    /**
+     * 게시글 좋아요
+     * @param postId
+     */
+    @PatchMapping("/posts/{postId}/like")
+    public void updateLike(@PathVariable Long postId) {
+        postService.updateLike(postId);
+    }
 }
