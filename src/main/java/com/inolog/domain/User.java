@@ -26,6 +26,7 @@ public class User {
 
     private String password;
 
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
     private LocalDateTime createdAt;
@@ -34,10 +35,11 @@ public class User {
     private List<Post> posts;
 
     @Builder
-    public User(String name, String email, String password) {
+    public User(String name, String email, String password, UserRole role) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.role = role;
         this.createdAt = LocalDateTime.now();
     }
 }

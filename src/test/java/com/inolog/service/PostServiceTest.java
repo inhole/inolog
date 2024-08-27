@@ -61,7 +61,7 @@ class PostServiceTest {
                 .build();
 
         // when
-        postService.write(user.getId(),postCreate);
+        postService.write(user.getId(), postCreate);
 
         // then
         assertEquals(1L, postRepository.count());
@@ -95,11 +95,11 @@ class PostServiceTest {
     void test3() {
         //given
         List<Post> requestPosts = IntStream.range(0, 20)
-                    .mapToObj(i -> Post.builder()
-                            .title("호돌맨 제목 " + i)
-                            .content("반포자이 " + i)
-                            .build())
-                    .collect(Collectors.toList());
+                .mapToObj(i -> Post.builder()
+                        .title("호돌맨 제목 " + i)
+                        .content("반포자이 " + i)
+                        .build())
+                .collect(Collectors.toList());
         postRepository.saveAll(requestPosts);
 
         PostSearch postSearch = PostSearch.builder()
@@ -235,5 +235,24 @@ class PostServiceTest {
             postService.edit(post.getId() + 1L, postEdit);
         });
 
+    }
+
+    @Test
+    @DisplayName("게시글 조회수")
+    void test11() {
+        //given
+        Post post = Post.builder()
+                .title("호돌맨")
+                .content("반포자이")
+                .build();
+
+        postRepository.save(post);
+
+        // when
+        postService.upHits(post.getId());
+
+        // then
+        Post post1 = postRepository.findAll().get(0);
+        assertEquals(1L, post1.getHits());
     }
 }

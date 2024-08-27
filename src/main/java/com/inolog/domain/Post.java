@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
+@DynamicInsert
 public class Post {
 
     @Id
@@ -24,6 +27,9 @@ public class Post {
     @Lob
     @Column(nullable = false)
     private String content; // 긴텍스트
+
+    @ColumnDefault("0")
+    private Long hits;
 
     @Column(nullable = false)
     private LocalDateTime regDate;
@@ -66,5 +72,9 @@ public class Post {
     public void addComment(Comment comment) {
         comment.setPost(this);
         this.comments.add(comment);
+    }
+
+    public void upHits() {
+        this.hits += 1L;
     }
 }

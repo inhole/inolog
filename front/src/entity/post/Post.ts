@@ -6,6 +6,7 @@ export default class Post {
   public title = ''
   public content = ''
   public categoryName = ''
+  public hits = 0
 
   @Transform(({ value }) => LocalDateTime.parse(value, DateTimeFormatter.ISO_LOCAL_DATE_TIME))
   public regDate = LocalDateTime.now()

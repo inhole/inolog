@@ -40,4 +40,10 @@ export default class PostRepository {
       body: request
     })
   }
+
+  public upHits(postId: number) {
+    return this.httpRepository.patch({
+      path: `/api/posts/${postId}/hits`
+    })
+  }
 }

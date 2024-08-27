@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, onMounted } from 'vue'
+import { defineProps, onBeforeMount, onMounted } from 'vue'
 import Comments from '@/components/comment/Comments.vue'
 import { usePostStore } from '@/stores/Post'
 import { useUserStore } from '@/stores/User'
@@ -13,6 +13,10 @@ const postId = Number(props.postId)
 const postStore = usePostStore()
 const userStore = useUserStore()
 
+onBeforeMount(() => {
+  postStore.upHits(postId)
+})
+
 onMounted(() => {
   postStore.getPost(postId)
 })
@@ -21,7 +25,12 @@ onMounted(() => {
 <template>
   <el-row>
     <el-col :spen="22" :offset="1">
-      <div class="title">{{ postStore.state.post.title }}</div>
+      <div class="title">
+        {{ postStore.state.post.title }}
+        <span class="hits">
+          <el-icon :size="15"><View /></el-icon> {{ postStore.state.post.hits }}
+        </span>
+      </div>
     </el-col>
   </el-row>
 
@@ -44,11 +53,11 @@ onMounted(() => {
 
       <div class="footer" v-if="userStore.state.profile != null">
         <el-button type="primary" size="small" plain @click="postStore.edit(postId)"
-          >수정</el-button
-        >
+          >수정
+        </el-button>
         <el-button type="danger" size="small" plain @click="postStore.remove(postId)"
-          >삭제</el-button
-        >
+          >삭제
+        </el-button>
       </div>
     </el-col>
   </el-row>
@@ -65,17 +74,25 @@ onMounted(() => {
   font-size: 1.8rem;
   font-weight: 400;
   text-align: center;
+  .hits {
+    margin-right: 1rem;
+    font-size: 1rem;
+    display: block;
+    text-align: right;
+  }
 }
 
 .sub {
   margin-top: 0.5rem;
   margin-bottom: 1rem;
   font-weight: 300;
+
   .category {
     margin-right: 0.8rem;
     font-size: 0.8rem;
     font-family: Georgia, serif;
   }
+
   .regDate {
     font-size: 0.73rem;
   }
