@@ -238,7 +238,7 @@ class PostServiceTest {
     }
 
     @Test
-    @DisplayName("게시글 좋아요")
+    @DisplayName("게시글 조회수")
     void test11() {
         //given
         Post post = Post.builder()
@@ -249,10 +249,10 @@ class PostServiceTest {
         postRepository.save(post);
 
         // when
-        postService.updateLike(post.getId());
+        postService.upHits(post.getId());
 
         // then
         Post post1 = postRepository.findAll().get(0);
-        assertEquals(1L, post1.getLikes());
+        assertEquals(1L, post1.getHits());
     }
 }

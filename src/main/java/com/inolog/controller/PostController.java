@@ -76,11 +76,11 @@ public class PostController {
     }
 
     /**
-     * 게시글 좋아요
+     * 게시글 조회
      * @param postId
      */
-    @PatchMapping("/posts/{postId}/like")
-    public void updateLike(@PathVariable Long postId) {
-        postService.updateLike(postId);
+    @PatchMapping("/posts/{postId}/hits")
+    public void upHits(@PathVariable Long postId) {
+        postService.upHits(postId);
     }
 }

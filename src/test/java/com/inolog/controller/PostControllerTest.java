@@ -241,7 +241,7 @@ class PostControllerTest {
 
     @Test
     @InologMockUser
-    @DisplayName("게시글 좋아요")
+    @DisplayName("게시글 조회수")
     void test11() throws Exception {
         // given
         User user = userRepository.findAll().get(0);
@@ -255,7 +255,7 @@ class PostControllerTest {
         postRepository.save(post);
 
         // when
-        mockMvc.perform(patch("/posts/{postId}/like", post.getId())
+        mockMvc.perform(patch("/posts/{postId}/hits", post.getId())
                         .contentType(APPLICATION_JSON)
                         )
                 .andExpect(status().isOk())
@@ -263,7 +263,7 @@ class PostControllerTest {
 
         // then
         Post post2 = postRepository.findAll().get(0);
-        Assertions.assertEquals(post2.getLikes(), 1L);
+        Assertions.assertEquals(post2.getHits(), 1L);
     }
 
 }

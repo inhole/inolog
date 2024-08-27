@@ -29,7 +29,7 @@ public class Post {
     private String content; // 긴텍스트
 
     @ColumnDefault("0")
-    private Long likes;
+    private Long hits;
 
     @Column(nullable = false)
     private LocalDateTime regDate;
@@ -74,7 +74,7 @@ public class Post {
         this.comments.add(comment);
     }
 
-    public void updateLike() {
-        this.likes += 1L;
+    public void upHits() {
+        this.hits += 1L;
     }
 }

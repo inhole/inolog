@@ -80,10 +80,10 @@ public class PostService {
     }
 
     @Transactional
-    public void updateLike(Long id) {
+    public void upHits(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(PostNotFound::new);
 
-        post.updateLike();
+        post.upHits();
     }
 }
