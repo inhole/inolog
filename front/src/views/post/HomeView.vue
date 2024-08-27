@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { isProxy, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import PostComponent from '@/components/post/PostComponent.vue'
 import { usePostStore } from '@/stores/Post'
 

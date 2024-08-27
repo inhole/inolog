@@ -97,5 +97,16 @@ export const usePostStore = defineStore('post', () => {
       })
   }
 
-  return { state, getAside, getList, getPost, write, edit, remove, editPost }
+  // 글 조회수
+  function upHits(postId: number) {
+    POST_REPOSITORY.upHits(postId)
+      .then(() => {
+        console.log('1')
+      })
+      .catch((e: HttpError) => {
+        console.log(e)
+      })
+  }
+
+  return { state, getAside, getList, getPost, write, edit, remove, editPost, upHits }
 })
