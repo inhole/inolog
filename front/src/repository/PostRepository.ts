@@ -3,6 +3,7 @@ import { inject, singleton } from 'tsyringe'
 import type PostWrite from '@/entity/post/PostWrite'
 import Post from '@/entity/post/Post'
 import type { UnwrapRef } from 'vue'
+import Likes from '@/entity/likes/Likes'
 
 @singleton()
 export default class PostRepository {

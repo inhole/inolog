@@ -1,0 +1,10 @@
+### 게시글 좋아요
+@postId = 1
+
+POST http://localhost:8080/posts/likes/{{postId}}
+Content-Type: application/json
+
+### 게시글 좋아요 취소
+
+DELETE http://localhost:8080/posts/likes/{{postId}}
+Content-Type: application/json

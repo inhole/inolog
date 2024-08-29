@@ -15,7 +15,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="comments" v-if="store.state.commentList.totalCount > 0">
+  <div class="comments">
     <div class="title">
       <div>
         댓글 {{ store.state.commentList.totalCount }}개
@@ -25,22 +25,24 @@ onMounted(() => {
       </div>
     </div>
 
-    <ul class="deprecation-comment">
-      <li v-for="comment in store.state.commentList.items" :key="comment.id">
-        <CommentComponent :comment="comment" :postId="postId" />
-      </li>
-    </ul>
+    <div v-if="store.state.commentList.totalCount > 0">
+      <ul class="deprecation-comment">
+        <li v-for="comment in store.state.commentList.items" :key="comment.id">
+          <CommentComponent :comment="comment" :postId="postId" />
+        </li>
+      </ul>
 
-    <div class="pagination-container">
-      <el-pagination
-        :background="false"
-        size="small"
-        layout="prev, pager, next"
-        v-model:current-page="store.state.commentList.page"
-        :total="store.state.commentList.totalCount"
-        :default-page-size="3"
-        @current-change="(page: number) => store.getList(postId, page)"
-      />
+      <div class="pagination-container">
+        <el-pagination
+          :background="false"
+          size="small"
+          layout="prev, pager, next"
+          v-model:current-page="store.state.commentList.page"
+          :total="store.state.commentList.totalCount"
+          :default-page-size="3"
+          @current-change="(page: number) => store.getList(postId, page)"
+        />
+      </div>
     </div>
   </div>
 </template>

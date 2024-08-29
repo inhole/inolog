@@ -3,6 +3,7 @@ import { defineProps, onBeforeMount, onMounted } from 'vue'
 import Comments from '@/components/comment/Comments.vue'
 import { usePostStore } from '@/stores/Post'
 import { useUserStore } from '@/stores/User'
+import { useLikesStore } from '@/stores/Likes'
 
 // router 설정 > index.ts 에서 지정한 postId 가져오기
 const props = defineProps<{
@@ -12,8 +13,10 @@ const postId = Number(props.postId)
 
 const postStore = usePostStore()
 const userStore = useUserStore()
+const likesStore = useLikesStore()
 
 onBeforeMount(() => {
+  likesStore.getLikes(postId)
   postStore.upHits(postId)
 })
 
@@ -27,8 +30,30 @@ onMounted(() => {
     <el-col :spen="22" :offset="1">
       <div class="title">
         {{ postStore.state.post.title }}
-        <span class="hits">
-          <el-icon :size="15"><View /></el-icon> {{ postStore.state.post.hits }}
+        <span class="hits-likes">
+          <span class="hits"
+            ><el-icon :size="15"><View /></el-icon> {{ postStore.state.post.hits }}</span
+          >
+          <template v-if="userStore.state.profile != null">
+            <template v-if="likesStore.state.likes.likesYn == false">
+              <span class="likes" @click="likesStore.insertLikes(postId)">
+                <el-icon :size="15"><Pear /></el-icon>
+                {{ likesStore.state.likes.likesCount }}</span
+              >
+            </template>
+            <template v-else>
+              <span class="likes" style="color: red" @click="likesStore.deleteLikes(postId)">
+                <el-icon :size="15"><Pear /></el-icon>
+                {{ likesStore.state.likes.likesCount }}</span
+              >
+            </template>
+          </template>
+          <template v-else>
+            <span class="likes">
+              <el-icon :size="15"><Pear /></el-icon>
+              {{ likesStore.state.likes.likesCount }}</span
+            >
+          </template>
         </span>
       </div>
     </el-col>
@@ -74,11 +99,14 @@ onMounted(() => {
   font-size: 1.8rem;
   font-weight: 400;
   text-align: center;
-  .hits {
+  .hits-likes {
     margin-right: 1rem;
-    font-size: 1rem;
+    font-size: 0.8rem;
     display: block;
     text-align: right;
+    .hits {
+      margin-right: 0.3rem;
+    }
   }
 }
 
