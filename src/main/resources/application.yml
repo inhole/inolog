@@ -31,3 +31,6 @@ spring:
 inolog:
   jwt-key: 3l3Cw10+O7gzomDsD4c7F1D7v3r3LBJ8MvMx8DJnQKE=
 
+# 파일 업로드
+file:
+  upload-dir: src/main/resources/static/uploads

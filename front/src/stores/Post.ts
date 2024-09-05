@@ -18,7 +18,6 @@ export const usePostStore = defineStore('post', () => {
     post: new Post(),
     // 글 작성
     postWrite: new PostWrite()
-    // 카테고리
   })
 
   const router = useRouter()
@@ -55,6 +54,7 @@ export const usePostStore = defineStore('post', () => {
 
   // 글 작성
   function write() {
+    console.log(state.postWrite)
     POST_REPOSITORY.write(state.postWrite)
       .then(() => {
         ElMessage({ type: 'success', message: '글 등록이 완료되었습니다.' })

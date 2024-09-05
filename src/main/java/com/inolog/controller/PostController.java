@@ -43,6 +43,16 @@ public class PostController {
     }
 
     /**
+     * 게시글 등록2
+     * @param request
+     */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/posts/quill")
+    public void postQuill(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid PostCreate request) {
+        postService.write(userPrincipal.getUserId(), request);
+    }
+
+    /**
      * 게시글 한건 조회
      * @param postId
      * @return
