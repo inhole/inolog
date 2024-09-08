@@ -2,9 +2,9 @@ package com.inolog.service;
 
 import com.inolog.domain.Post;
 import com.inolog.domain.PostEditor;
-import com.inolog.exception.CategoryNotFound;
-import com.inolog.exception.PostNotFound;
-import com.inolog.exception.UserNotFound;
+import com.inolog.exception.category.CategoryNotFound;
+import com.inolog.exception.post.PostNotFound;
+import com.inolog.exception.auth.UserNotFound;
 import com.inolog.repository.post.PostRepository;
 import com.inolog.repository.user.UserRepository;
 import com.inolog.request.post.PostCreate;

@@ -1,7 +1,7 @@
 package com.inolog.service;
 
 import com.inolog.domain.Category;
-import com.inolog.exception.CategoryNotFound;
+import com.inolog.exception.category.CategoryNotFound;
 import com.inolog.repository.category.CategoryRepository;
 import com.inolog.request.category.CategoryCreate;
 import com.inolog.request.category.CategoryEdit;
@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

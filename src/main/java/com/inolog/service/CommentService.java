@@ -2,9 +2,9 @@ package com.inolog.service;
 
 import com.inolog.domain.Comment;
 import com.inolog.domain.Post;
-import com.inolog.exception.CommentNotFound;
-import com.inolog.exception.InvalidPassword;
-import com.inolog.exception.PostNotFound;
+import com.inolog.exception.comment.CommentNotFound;
+import com.inolog.exception.auth.InvalidPassword;
+import com.inolog.exception.post.PostNotFound;
 import com.inolog.repository.comment.CommentRepository;
 import com.inolog.repository.post.PostRepository;
 import com.inolog.request.comment.CommentCreate;

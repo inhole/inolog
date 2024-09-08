@@ -1,7 +1,7 @@
 package com.inolog.service;
 
 import com.inolog.domain.User;
-import com.inolog.exception.AlreadyExistsEmailException;
+import com.inolog.exception.auth.AlreadyExistsEmailException;
 import com.inolog.repository.user.UserRepository;
 import com.inolog.request.user.Signup;
 import lombok.RequiredArgsConstructor;

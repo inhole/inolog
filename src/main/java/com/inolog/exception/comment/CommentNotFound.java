@@ -1,4 +1,6 @@
-package com.inolog.exception;
+package com.inolog.exception.comment;
+
+import com.inolog.exception.InologException;
 
 /**
  * status -> 404

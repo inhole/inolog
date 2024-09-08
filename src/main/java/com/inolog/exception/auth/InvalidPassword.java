@@ -1,4 +1,6 @@
-package com.inolog.exception;
+package com.inolog.exception.auth;
+
+import com.inolog.exception.InologException;
 
 public class InvalidPassword extends InologException {
 

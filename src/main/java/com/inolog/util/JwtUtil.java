@@ -1,7 +1,7 @@
 package com.inolog.util;
 
 import com.inolog.config.AppConfig;
-import com.inolog.exception.Unauthorized;
+import com.inolog.exception.auth.Unauthorized;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;

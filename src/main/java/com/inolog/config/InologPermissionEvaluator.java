@@ -1,6 +1,6 @@
 package com.inolog.config;
 
-import com.inolog.exception.PostNotFound;
+import com.inolog.exception.post.PostNotFound;
 import com.inolog.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,7 @@
-package com.inolog.exception;
+package com.inolog.exception.common;
 
 
+import com.inolog.exception.InologException;
 import lombok.Getter;
 
 /**

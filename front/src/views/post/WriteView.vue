@@ -2,11 +2,15 @@
 import { usePostStore } from '@/stores/Post'
 import { useCategoryStore } from '@/stores/Category'
 import { computed, nextTick, onMounted, reactive, ref } from 'vue'
-import Quill from '@/components/post/Quill.vue'
 import { QuillEditor } from '@vueup/vue-quill'
+import { useFileStore } from '@/stores/File'
+import { container } from 'tsyringe'
+import FileRepository from '@/repository/FileRepository'
 
 const postStore = usePostStore()
 const categoryStore = useCategoryStore()
+const FILE_REPOSITORY = container.resolve(FileRepository)
+
 const quillEditor = ref<typeof QuillEditor | null>(null)
 
 const state = reactive({
@@ -51,9 +55,9 @@ onMounted(async () => {
 })
 
 async function imageHandler() {
-  console.log('[imageHandler]::: S')
   const editor = quillEditor.value?.getQuill()
 
+  // input 세팅
   const input = document.createElement('input')
   input.setAttribute('type', 'file')
   input.setAttribute('accept', 'image/*')
@@ -61,6 +65,7 @@ async function imageHandler() {
 
   input.click()
 
+  // 이미지 선택후
   input.onchange = async () => {
     const files = input.files
     if (!files) return
@@ -69,24 +74,21 @@ async function imageHandler() {
       const formData = new FormData()
       formData.append('image', file)
 
-      try {
-        // 서버에 이미지 업로드 요청
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData
-        })
+      // 서버에 이미지 업로드 요청
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      })
 
-        if (!response.ok) {
-          throw new Error('Image upload failed')
-        }
-
-        const data = await response.json()
-        return data.url // 서버에서 반환된 이미지 URL
-      } catch (error) {
-        console.error('Image upload failed:', error)
-        return ''
+      if (!response.ok) {
+        throw new Error('Image upload failed')
       }
+
+      const data = await response.json()
+      return data.url // 서버에서 반환된 이미지 URL
     })
+
+    console.log('uploadPromises :: ' + JSON.stringify(uploadPromises))
 
     const imageUrls = await Promise.all(uploadPromises)
 

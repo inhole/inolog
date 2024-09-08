@@ -2,7 +2,7 @@ package com.inolog.service;
 
 import com.inolog.domain.Post;
 import com.inolog.domain.User;
-import com.inolog.exception.PostNotFound;
+import com.inolog.exception.post.PostNotFound;
 import com.inolog.repository.post.PostRepository;
 import com.inolog.repository.user.UserRepository;
 import com.inolog.request.post.PostCreate;
