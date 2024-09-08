@@ -102,11 +102,6 @@ async function imageHandler() {
 
 // 글 작성 submit
 function submitPost() {
-  if (!quillEditor.value) {
-    console.error('QuillEditor error')
-    return false
-  }
-
   const editor = quillEditor.value?.getQuill()
   const html = editor.root.innerHTML
 
@@ -151,7 +146,7 @@ function submitPost() {
     </el-form-item>
 
     <el-form-item>
-      <el-button type="primary" style="width: 100%" @click="postStore.write()">등록완료</el-button>
+      <el-button type="primary" style="width: 100%" @click="submitPost()">등록완료</el-button>
     </el-form-item>
   </el-form>
 </template>

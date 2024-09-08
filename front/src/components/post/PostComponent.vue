@@ -13,11 +13,14 @@ const props = defineProps<{
     }}</router-link>
   </div>
 
-  <div class="regDate">{{ props.post.getDisplaySimpleRegDate() }}</div>
-
-  <div class="content">
-    {{ props.post.getDisplayContent() }}
+  <div class="sub-title">
+    <span class="category-name">{{ props.post.categoryName }}</span>
+    <span class="reg-date">{{ props.post.getDisplaySimpleRegDate() }}</span>
   </div>
+
+  <!--  <div class="content">-->
+  <!--    {{ props.post.getDisplayContent() }}-->
+  <!--  </div>-->
 
   <!--  <div class="readMore">-->
   <!--    <router-link :to="{ name: 'post', params: { postId: props.post.id } }">Read more </router-link>-->
@@ -38,10 +41,17 @@ const props = defineProps<{
   }
 }
 
-.regDate {
+.sub-title {
   margin-top: 0.4rem;
-  font-size: 0.75rem;
-  color: #6b6b6b;
+  .category-name {
+    font-size: 0.85rem;
+    color: #beb78c;
+    margin-right: 0.3rem;
+  }
+  .reg-date {
+    font-size: 0.75rem;
+    color: #6b6b6b;
+  }
 }
 
 .content {

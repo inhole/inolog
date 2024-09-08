@@ -72,9 +72,10 @@ onMounted(() => {
 
   <el-row>
     <el-col>
-      <div class="content">
-        {{ postStore.state.post.content }}
-      </div>
+      <!--      <div class="content">-->
+      <!--        {{ postStore.state.post.content }}-->
+      <!--      </div>-->
+      <div class="content" v-html="postStore.state.post.content" />
 
       <div class="footer" v-if="userStore.state.profile != null">
         <el-button type="primary" size="small" plain @click="postStore.edit(postId)"
@@ -129,7 +130,6 @@ onMounted(() => {
 .content {
   margin-top: 0.8rem;
   font-weight: 300;
-
   word-break: break-all;
   white-space: break-spaces;
   line-height: 1.4;
@@ -139,5 +139,11 @@ onMounted(() => {
 .footer {
   text-align: end;
   //display: flex;
+}
+</style>
+
+<style>
+img {
+  width: 100%;
 }
 </style>
