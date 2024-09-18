@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -39,16 +38,6 @@ public class PostController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/posts")
     public void post(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid PostCreate request) {
-        postService.write(userPrincipal.getUserId(), request);
-    }
-
-    /**
-     * 게시글 등록2
-     * @param request
-     */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/posts/quill")
-    public void postQuill(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid PostCreate request) {
         postService.write(userPrincipal.getUserId(), request);
     }
 

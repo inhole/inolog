@@ -1,39 +1,15 @@
 <script setup lang="ts">
 import { usePostStore } from '@/stores/Post'
 import { useCategoryStore } from '@/stores/Category'
-import { computed, nextTick, onMounted, reactive, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import { useFileStore } from '@/stores/File'
-import { container } from 'tsyringe'
-import FileRepository from '@/repository/FileRepository'
 
 const postStore = usePostStore()
 const categoryStore = useCategoryStore()
-const FILE_REPOSITORY = container.resolve(FileRepository)
+const fileStore = useFileStore()
 
 const quillEditor = ref<typeof QuillEditor | null>(null)
-
-const state = reactive({
-  editorOption: {
-    placeholder: '내용을 입력해주세요.',
-    modules: {
-      toolbar: [
-        ['bold', 'italic', 'underline', 'strike'],
-        ['blockquote', 'code-block'],
-        [{ header: 1 }, { header: 2 }],
-        [{ list: 'ordered' }, { list: 'bullet' }],
-        [{ color: [] }, { background: [] }],
-        [{ font: [] }],
-        [{ align: [] }],
-        ['clean'],
-        ['link', 'image']
-      ]
-    }
-    // handlers: {
-    //   image: imageHandler
-    // }
-  }
-})
 
 const categoryId = computed({
   get() {
@@ -48,57 +24,12 @@ onMounted(async () => {
   categoryStore.getList()
   await nextTick()
 
-  const editorInstance = quillEditor.value?.getQuill()
-  if (editorInstance) {
-    editorInstance.getModule('toolbar').addHandler('image', imageHandler)
+  // const editorInstance = quillEditor.value?.getQuill()
+  fileStore.state.editor = quillEditor.value?.getQuill()
+  if (fileStore.state.editor) {
+    fileStore.state.editor.getModule('toolbar').addHandler('image', fileStore.imageHandler)
   }
 })
-
-async function imageHandler() {
-  const editor = quillEditor.value?.getQuill()
-
-  // input 세팅
-  const input = document.createElement('input')
-  input.setAttribute('type', 'file')
-  input.setAttribute('accept', 'image/*')
-  input.multiple = true
-
-  input.click()
-
-  // 이미지 선택후
-  input.onchange = async () => {
-    const files = input.files
-    if (!files) return
-
-    const uploadPromises = Array.from(files).map(async (file) => {
-      const formData = new FormData()
-      formData.append('image', file)
-
-      // 서버에 이미지 업로드 요청
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData
-      })
-
-      if (!response.ok) {
-        throw new Error('Image upload failed')
-      }
-
-      const data = await response.json()
-      return data.url // 서버에서 반환된 이미지 URL
-    })
-
-    console.log('uploadPromises :: ' + JSON.stringify(uploadPromises))
-
-    const imageUrls = await Promise.all(uploadPromises)
-
-    // Quill 에디터에 이미지 삽입
-    imageUrls.forEach((url) => {
-      const range = editor.getSelection()
-      editor.insertEmbed(range.index, 'image', url)
-    })
-  }
-}
 
 // 글 작성 submit
 function submitPost() {
@@ -139,7 +70,7 @@ function submitPost() {
           theme="snow"
           v-model:content="postStore.state.postWrite.content"
           content-type="html"
-          :options="state.editorOption"
+          :options="fileStore.editorOption"
         />
       </div>
       <!--      <el-input v-model="postStore.state.postWrite.content" type="textarea" rows="15" alt="내용" />-->
