@@ -34,6 +34,11 @@ public class FileController {
     @Value("${file.upload-dir}")
     private String uploadDir;
 
+    /**
+     * 이미지 에디터 업로드시 저장
+     * @param files
+     * @return
+     */
     @PostMapping("/upload")
     public ResponseEntity<FileResponse> uploadFile(@RequestParam("image") MultipartFile[] files) {
 
